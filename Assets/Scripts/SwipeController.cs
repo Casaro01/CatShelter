@@ -21,7 +21,7 @@ public class SwipeController : MonoBehaviour
             // Se il dito si muove
             if (touch.phase == TouchPhase.Moved) {
                 // Calcola la differenza di posizione sull'asse X rispetto all'ultimo tocco
-                float deltaX = touch.position.x - lastPosition.x;
+                float deltaX = touch.position.x + lastPosition.x;
 
                 // Calcola la nuova posizione della camera sull'asse X
                 Vector3 newPosition = new Vector3(transform.position.x + deltaX * swipeSpeed, transform.position.y, transform.position.z);
