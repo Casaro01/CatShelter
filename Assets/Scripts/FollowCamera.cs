@@ -1,15 +1,17 @@
 using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
-    {
-    public Transform target;
-    public float smoothSpeed = 0.125f;
-    public Vector3 offset;
+{
+    public float followSpeed = 10f;
+    private Transform mainCameraTransform;
+
+    void Start() {
+        mainCameraTransform = Camera.main.transform;
+    }
 
     void LateUpdate() {
-        Vector3 desiredPosition = target.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
-        transform.LookAt(target);
-        }
+        transform.position = mainCameraTransform.position;
+        transform.rotation = mainCameraTransform.rotation;
+        
     }
+}

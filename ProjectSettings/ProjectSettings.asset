@@ -73,7 +73,7 @@ PlayerSettings:
   androidDefaultWindowHeight: 1920
   androidMinimumWindowWidth: 300
   androidMinimumWindowHeight: 400
-  androidFullscreenMode: 3
+  androidFullscreenMode: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
   runInBackground: 1
@@ -152,7 +152,7 @@ PlayerSettings:
   targetPixelDensity: 30
   resolutionScalingMode: 0
   resetResolutionOnWindowResize: 0
-  androidSupportedAspectRatio: 1
+  androidSupportedAspectRatio: 0
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.com.unity.template.mobile2D
