@@ -136,9 +136,9 @@ GameObject:
   - component: {fileID: 114615208}
   - component: {fileID: 114615207}
   - component: {fileID: 114615206}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Slot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -246,9 +246,9 @@ GameObject:
   - component: {fileID: 200696065}
   - component: {fileID: 200696064}
   - component: {fileID: 200696063}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Item
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -543,9 +543,9 @@ GameObject:
   - component: {fileID: 630923190}
   - component: {fileID: 630923189}
   - component: {fileID: 630923188}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cat
-  m_TagString: Untagged
+  m_TagString: Cat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
