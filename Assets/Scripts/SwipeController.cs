@@ -38,10 +38,10 @@ public class SwipeController : MonoBehaviour
     void InBounds() {
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), clampY, clampZ);
             }
-    public void SwipeCamera(Touch input, Vector2 firstPosition) {
+    public void SwipeCamera(Touch input) {
         if (input.phase==TouchPhase.Moved){
             //differenza tra tocco di partenza(firstPosition) e attuale(input)
-            float deltaX = input.position.x - firstPosition.x;
+            float deltaX = input.position.x - lastPosition.x;
             // Calcola la nuova posizione della camera sull'asse X
             Vector3 newPosition = new Vector3(transform.position.x - deltaX * swipeSpeed, transform.position.y, transform.position.z);
             // Applica la transizione graduale alla nuova posizione
