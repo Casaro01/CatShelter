@@ -5,6 +5,7 @@ public class SwipeController : MonoBehaviour
     public float minX, maxX, clampY, clampZ;
     public float swipeSpeed = 0.5f; // Velocità di transizione
     public float smoothTime = 0.3f; // Tempo di transizione
+    public float dragSpeed = 0.2f; //velocità di drag
     private Vector2 lastPosition; // Ultima posizione toccata
     private Vector3 velocity = Vector3.zero; // Velocità di transizione
 
@@ -37,6 +38,28 @@ public class SwipeController : MonoBehaviour
     void InBounds() {
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), clampY, clampZ);
             }
+    public void SwipeCamera(Touch input, Vector2 firstPosition) {
+        if (input.phase==TouchPhase.Moved){
+            //differenza tra tocco di partenza(firstPosition) e attuale(input)
+            float deltaX = input.position.x - firstPosition.x;
+            // Calcola la nuova posizione della camera sull'asse X
+            Vector3 newPosition = new Vector3(transform.position.x - deltaX * swipeSpeed, transform.position.y, transform.position.z);
+            // Applica la transizione graduale alla nuova posizione
+            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+            //si salva l'ultima per il deltaX all'inizio
+            lastPosition = input.position;
+            InBounds();
+            }
         }
+    /*public void DragCamera(Vector3 drag) {
+            if(drag)
+            // Calcola la nuova posizione della camera sull'asse X
+            Vector3 newPosition = new Vector3(transform.position.x - deltaX * swipeSpeed, transform.position.y, transform.position.z);
+            // Applica la transizione graduale alla nuova posizione
+            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+            InBounds();
+            }*/
+        }
+
     
     
