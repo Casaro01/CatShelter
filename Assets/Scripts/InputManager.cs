@@ -17,7 +17,7 @@ public class InputManager : MonoBehaviour
 			if (Input.touchCount > 0)
 			{
 				// continue drag saved cat instance
-				DraggedCat.GetComponent<Cat>.Move(TouchPosition);
+				DraggedCat.Move(TouchPosition());
 				
 			}
 			else
@@ -31,13 +31,12 @@ public class InputManager : MonoBehaviour
 			// todo if raycast.hit = UI  --> uiManager
 
 			// save cat instance in cat variable
-			
-			if (hit.collider.GetComponent<Cat>() == true)
+			DraggedCat = hit.collider.GetComponent<Cat>();
+			if (DraggedCat == true)
 			{
 				dragCat = true;
-				DraggedCat = hit.collider.gameObject;
 				// make cat save previous position to return to if Place() fails
-				DraggedCat.GetComponent<Cat>.Move(TouchPosition);
+				DraggedCat.Move(TouchPosition());
 				// if touch input at edges of the screen { DragCamera() }
 			}
 			// else mainCamera.SwipeCamera();
