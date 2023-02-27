@@ -4,5 +4,5 @@ using UnityEngine;
 
 interface IPlaceable
 {
-    void Move();
+    void Move(Vector3 NewPosition);
 }
