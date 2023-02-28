@@ -14,7 +14,7 @@ public class Item : MonoBehaviour, IPlaceable
 			mainCamera.WorldToScreenPoint(transform.position).z; //z axis of the game object for screen view
 	}
 
-	public void Move() {
+	public void Move(Vector3 newPosition) {
 		/*if (Input.touchCount > 0) {
 			Touch touch = Input.GetTouch(0);
 
@@ -29,6 +29,6 @@ public class Item : MonoBehaviour, IPlaceable
 
 	void Update() {
 		// Handle screen touches.
-		Move();
+		Move(Vector3.down);
 	}
 }

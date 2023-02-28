@@ -14,40 +14,51 @@ public class InputManager : MonoBehaviour
 	{
 		if (dragCat)
 		{
-			if (Input.touchCount > 0)
-			{
-				// continue drag saved cat instance
-				DraggedCat.Move(TouchPosition());
-				
-			}
-			else
-			{
-				dragCat = false;
-				// place
-			}
+			DraggingCat();
 		}
 		else if (Input.touchCount > 0)
 		{
-			// todo if raycast.hit = UI  --> uiManager
-
-			// save cat instance in cat variable
-			DraggedCat = hit.collider.GetComponent<Cat>();
-			if (DraggedCat == true)
-			{
-				dragCat = true;
-				// make cat save previous position to return to if Place() fails
-				DraggedCat.Move(TouchPosition());
-				// if touch input at edges of the screen { DragCamera() }
-			}
-			// else mainCamera.SwipeCamera();
+			NewTouch();
 		}
 	}
 
-	public Vector3 TouchPosition()
+	private Vector3 TouchPosition()
 	{
 		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates
 		Touch touch = Input.GetTouch(0);
 		Vector3 ScreenPosition = new Vector3(touch.position.x, touch.position.y, CameraZDistance);
 		return mainCamera.ScreenToWorldPoint(ScreenPosition);
+	}
+
+	private void DraggingCat()
+	{
+		if (Input.touchCount > 0)
+		{
+			// continue drag saved cat instance
+			DraggedCat.Move(TouchPosition());
+
+		}
+		else
+		{
+			dragCat = false;
+			// place
+		}
+	}
+
+	private void NewTouch()
+	{
+		// todo if raycast.hit = UI  --> uiManager
+
+		// save cat instance in cat variable
+		DraggedCat = hit.collider.GetComponent<Cat>();
+
+		if (DraggedCat == true)
+		{
+			dragCat = true;
+			// todo make cat save previous position to return to if Place() fails
+			DraggedCat.Move(TouchPosition());
+			// todo if touch input at edges of the screen { DragCamera() }
+		}
+		// else if raycast empty -> mainCamera.SwipeCamera();
 	}
 }
