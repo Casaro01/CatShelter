@@ -10,7 +10,7 @@ public class SwipeController : MonoBehaviour
     private Vector3 velocity = Vector3.zero; // Velocità di transizione
 
     void Update() {
-        // Se viene rilevato un tocco
+        /*// Se viene rilevato un tocco
         if (Input.touchCount > 0) {
             Touch touch = Input.GetTouch(0);
 
@@ -33,23 +33,20 @@ public class SwipeController : MonoBehaviour
                 lastPosition = touch.position;
                 InBounds();
                 }
-            }
+            }*/
         }
     void InBounds() {
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), clampY, clampZ);
             }
-    public void SwipeCamera(Touch input) {
-        if (input.phase==TouchPhase.Moved){
-            //differenza tra tocco di partenza(firstPosition) e attuale(input)
-            float deltaX = input.position.x - lastPosition.x;
-            // Calcola la nuova posizione della camera sull'asse X
-            Vector3 newPosition = new Vector3(transform.position.x - deltaX * swipeSpeed, transform.position.y, transform.position.z);
-            // Applica la transizione graduale alla nuova posizione
-            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
-            //si salva l'ultima per il deltaX all'inizio
-            lastPosition = input.position;
-            InBounds();
-            }
+    public void SwipeCamera(float input) {
+        float deltaX = input - lastPosition.x;
+        // Calcola la nuova posizione della camera sull'asse X
+        Vector3 newPosition = new Vector3(transform.position.x - deltaX * swipeSpeed, transform.position.y, transform.position.z);
+        // Applica la transizione graduale alla nuova posizione
+        transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+        //si salva l'ultima per il deltaX all'inizio
+        lastPosition.x = input;
+        InBounds();
         }
     /*public void DragCamera(Vector3 drag) {
             if(drag)
