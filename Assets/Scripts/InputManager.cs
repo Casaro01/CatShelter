@@ -1,23 +1,27 @@
-	using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-	private Camera mainCamera;
+	public Camera mainCamera;
 	private float CameraZDistance = 0;
 	private RaycastHit hit;
 	bool dragCat = false;
-	public Cat DraggedCat;
+	private Cat DraggedCat;
 
 	public void Update()
 	{
+		
 		if (dragCat)
 		{
 			DraggingCat();
+			Debug.Log("Dragging rilevato.");
 		}
 		else if (Input.touchCount > 0)
 		{
+			Debug.Log("Touch rilevato.");
 			NewTouch();
 		}
 	}
@@ -35,30 +39,40 @@ public class InputManager : MonoBehaviour
 		if (Input.touchCount > 0)
 		{
 			// continue drag saved cat instance
-			DraggedCat.Move(TouchPosition());
+			Vector3 newPosition = new Vector3(TouchPosition().x, TouchPosition().y, 11);
+			DraggedCat.Move(newPosition);
 
 		}
 		else
 		{
 			dragCat = false;
-			// place
+			DraggedCat = null;
+			// todo place
 		}
 	}
 
 	private void NewTouch()
 	{
 		// todo if raycast.hit = UI  --> uiManager
-
-		// save cat instance in cat variable
-		DraggedCat = hit.collider.GetComponent<Cat>();
-
-		if (DraggedCat == true)
+		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 		{
-			dragCat = true;
-			// todo make cat save previous position to return to if Place() fails
-			DraggedCat.Move(TouchPosition());
-			// todo if touch input at edges of the screen { DragCamera() }
+			// save cat instance in cat variable
+			DraggedCat = hit.collider.GetComponent<Cat>();
+
+			if (DraggedCat == true)
+			{
+				Debug.Log("Draggedcat");
+				dragCat = true;
+				// todo make cat save previous position to return to if Place() fails
+				DraggedCat.Move(TouchPosition());
+				// todo if touch input at edges of the screen { DragCamera() }
+			}
 		}
-		// else if raycast empty -> mainCamera.SwipeCamera();
+		else
+		{
+			Debug.Log("Cameramove");
+			mainCamera.GetComponent<SwipeController>().SwipeCamera(TouchPosition().x);
+		}
+
 	}
 }

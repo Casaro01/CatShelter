@@ -9,9 +9,6 @@ public class Cat : MonoBehaviour, IPlaceable
 	// todo int energy (int with complex management, to do after rarity) : can grow with time, how much and how often depends on rarity; static modifier to how much time an action takes
 	// todo assigned bed item : the cat's personal bed where he stays to when idle
 
-	// variables to make drag movement work
-	private Camera mainCamera;
-	private float CameraZDistance;
 	private RaycastHit hit;
 
 	public void Move(Vector3 newPosition) {
