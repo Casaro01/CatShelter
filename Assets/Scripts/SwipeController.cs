@@ -9,9 +9,11 @@ public class SwipeController : MonoBehaviour
     private Vector2 lastPosition; // Ultima posizione toccata
     private Vector3 velocity = Vector3.zero; // Velocità di transizione
     [SerializeField] private float moveTowardsSpeed = 1f;
+    private Camera cam;
 	private void Start()
 	{
         lastPosition = new Vector2(transform.position.x, transform.position.y);
+        cam=GetComponent<Camera>();
 	}
 
 	void Update() {
@@ -66,14 +68,20 @@ public class SwipeController : MonoBehaviour
         lastPosition.x = input;
     }
 
-    /*public void DragCamera(Vector3 drag) {
-            if(drag)
-            // Calcola la nuova posizione della camera sull'asse X
-            Vector3 newPosition = new Vector3(transform.position.x - deltaX * swipeSpeed, transform.position.y, transform.position.z);
+    public void DragCamera(Vector3 drag) {
+        Vector3 viewPoint = cam.WorldToViewportPoint(drag);
+        if (viewPoint.x <= 0.2) {
+            //drag verso sinistra
+            Vector3 newPosition = new Vector3(InBounds(transform.position.x - Time.deltaTime * dragSpeed), transform.position.y, transform.position.z);
             // Applica la transizione graduale alla nuova posizione
             transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
-            InBounds();
-            }*/
+        }
+        else if (viewPoint.x >= 0.8) {
+            Vector3 newPosition = new Vector3(InBounds(transform.position.x + Time.deltaTime * dragSpeed), transform.position.y, transform.position.z);
+            // Applica la transizione graduale alla nuova posizione
+            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+        }
+    }
         }
 
     
