@@ -61,18 +61,12 @@ public class InputManager : MonoBehaviour
 		// todo if raycast.hit = UI  --> uiManager
 		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 		{
+			dragCat = true;
 			// save cat instance in cat variable
 			DraggedCat = hit.collider.GetComponent<Cat>();
-
-			if (DraggedCat == true)
-			{
-				Vector3 v = TouchPosition();
-				Debug.Log("Draggedcat: " + v);
-				dragCat = true;
-				// todo make cat save previous position to return to if Place() fails
-				DraggedCat.Move(v);
-				// todo if touch input at edges of the screen { DragCamera() }
-			}
+			DraggedCat.Move(TouchPosition());
+			// todo make cat save previous position to return to if Place() fails - maybe better fitting in the cat.move() methid
+			// todo if touch input at edges of the screen { DragCamera() }
 		}
 		else
 		{
