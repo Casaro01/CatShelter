@@ -7,33 +7,15 @@ public class Cat : MonoBehaviour, IPlaceable
 {
 	// todo int rarity (new object? cat subclass?) : decides how rare the cat is to find and how much energy it gets
 	// todo int energy (int with complex management, to do after rarity) : can grow with time, how much and how often depends on rarity; static modifier to how much time an action takes
-	// todo assigned bed item : the cat's personal bed where he stays to when idle
-
+	private Item myBed = null;
+	private Item myItem = null;
 	private RaycastHit hit;
 
 	public void Move(Vector3 newPosition) {
 		transform.position = newPosition;
-		/*
-		//if you get a touch input
-		Vector3 NewWorldPosition = GetWorldTouch();
-		//if touch position in gameworld coordinates is touching object
-		if (Physics.Raycast(NewWorldPosition - new Vector3(0, 0, 20), Vector3.forward, out hit, 100)) {
-			isDragging = true;
-			//if object touched is this one
-			if (hit.transform.gameObject == this.gameObject) {
-				//move to gameworld coordinates
-				hit.transform.position = NewWorldPosition;
-			}
-			//vvv if you want to move any object remove "if object is this one" part and keep this vvv
-			//hit.transform.position = NewWorldPosition;
-		}
-		else {
-			isDragging = false;
-		}
-		*/
 	}
 
-	public void Place() {
+	public void PlaceIn() {
 		// PROBABLY THIS WILL TURN INTO A FUNCTION RETURNING AN ITEM TO SNAP TO
 
 		// sphere cast ray to see if anything is touching
@@ -55,7 +37,21 @@ public class Cat : MonoBehaviour, IPlaceable
 		}
 		else
 		{
-			// return to previous position
+			PlaceFailed();
+		}
+	}
+
+	private Item PlaceFailed()
+	{
+		if (myItem != null)
+		{
+			// if working on an item, go back to it
+			return myItem;
+		}
+		else
+		{
+			// go back to bed
+			return myBed;
 		}
 	}
 }
