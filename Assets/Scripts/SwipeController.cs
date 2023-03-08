@@ -23,7 +23,8 @@ public class SwipeController : MonoBehaviour
 
     public void SwipeCamera(float input) {
         Vector2 enterPosition = new Vector2(input, transform.position.y);
-
+        if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1)
+            lastPosition = enterPosition;  
 		Debug.Log("Swiping: " + input);
         float deltaX = input - lastPosition.x;
         // Calcola la nuova posizione della camera sull'asse X
