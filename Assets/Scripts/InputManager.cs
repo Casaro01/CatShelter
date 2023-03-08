@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
 			Vector3 touch = TouchPosition();
 			Vector3 newPosition = new Vector3(touch.x, touch.y, CameraZDistance);
 			DraggedCat.Move(newPosition);
-
+			swipeController.DragCamera(TouchPosition());
 		}
 		else
 		{
@@ -65,13 +65,12 @@ public class InputManager : MonoBehaviour
 			// save cat instance in cat variable
 			DraggedCat = hit.collider.GetComponent<Cat>();
 			DraggedCat.Move(TouchPosition());
+			swipeController.DragCamera(TouchPosition());
 			// todo make cat save previous position to return to if Place() fails - maybe better fitting in the cat.move() methid
-			// todo if touch input at edges of the screen { DragCamera() }
 		}
 		else
 		{
 			swipeController.SwipeCamera(TouchPosition().x);
 		}
-
 	}
 }

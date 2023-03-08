@@ -610,11 +610,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minX: -4.6
   maxX: 4.6
-  swipeSpeed: 0.08
-  smoothTime: 0.25
+  swipeSpeed: 0.7
+  smoothTime: 0.1
   dragSpeed: 0.2
   moveTowardsSpeed: 1
-  cam: {fileID: 0}
+  cam: {fileID: 519420031}
 --- !u!1 &628835862
 GameObject:
   m_ObjectHideFlags: 0
