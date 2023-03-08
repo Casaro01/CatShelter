@@ -9,11 +9,10 @@ public class SwipeController : MonoBehaviour
     private Vector2 lastPosition; // Ultima posizione toccata
     private Vector3 velocity = Vector3.zero; // Velocità di transizione
     [SerializeField] private float moveTowardsSpeed = 1f;
-    private Camera cam;
+    public Camera cam;
 	private void Start()
 	{
         lastPosition = new Vector2(transform.position.x, transform.position.y);
-        cam=GetComponent<Camera>();
 	}
 
 	void Update() {
@@ -72,15 +71,17 @@ public class SwipeController : MonoBehaviour
         Vector3 viewPoint = cam.WorldToViewportPoint(drag);
         if (viewPoint.x <= 0.2) {
             //drag verso sinistra
-            Vector3 newPosition = new Vector3(InBounds(transform.position.x - Time.deltaTime * dragSpeed), transform.position.y, transform.position.z);
+            Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.left.x * dragSpeed), transform.position.y, transform.position.z);
             // Applica la transizione graduale alla nuova posizione
-            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
-        }
-        else if (viewPoint.x >= 0.8) {
-            Vector3 newPosition = new Vector3(InBounds(transform.position.x + Time.deltaTime * dragSpeed), transform.position.y, transform.position.z);
-            // Applica la transizione graduale alla nuova posizione
-            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
-        }
+            //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+            transform.position = Vector3.Lerp(transform.position, newPosition, smoothTime);
+
+            } else if (viewPoint.x >= 0.8) {
+                Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.right.x * dragSpeed), transform.position.y, transform.position.z);
+                 // Applica la transizione graduale alla nuova posizione
+                 //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+                 transform.position = Vector3.Lerp(transform.position, newPosition, smoothTime);
+            }
     }
         }
 
