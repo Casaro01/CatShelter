@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-	public Camera mainCamera;
+	public static Camera mainCamera;
 	private SwipeController swipeController;
-	private float CameraZDistance = 0;
+	public static float CameraZDistance = 0;
 	private RaycastHit hit;
 	bool dragCat = false;
 	private Cat DraggedCat;
@@ -29,7 +29,7 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	private Vector3 TouchPosition()
+	public static Vector3 TouchPosition()
 	{
 		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates
 		Touch touch = Input.GetTouch(0);
@@ -43,9 +43,9 @@ public class InputManager : MonoBehaviour
 		if (Input.touchCount > 0)
 		{
 			// continue drag saved cat instance
-			Vector3 touch = TouchPosition();
-			Vector3 newPosition = new Vector3(touch.x, touch.y, CameraZDistance);
-			DraggedCat.Move(newPosition);
+			// Vector3 touch = TouchPosition();
+			// Vector3 newPosition = new Vector3(touch.x, touch.y, CameraZDistance);
+			// DraggedCat.Move(newPosition);
 			swipeController.DragCamera(TouchPosition());
 		}
 		else
@@ -59,12 +59,13 @@ public class InputManager : MonoBehaviour
 	private void NewTouch()
 	{
 		// todo if raycast.hit = UI  --> uiManager
+
 		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 		{
 			dragCat = true;
 			// save cat instance in cat variable
 			DraggedCat = hit.collider.GetComponent<Cat>();
-			DraggedCat.Move(TouchPosition());
+			DraggedCat.OnDragStart();
 			swipeController.DragCamera(TouchPosition());
 			// todo make cat save previous position to return to if Place() fails - maybe better fitting in the cat.move() methid
 		}
