@@ -9,7 +9,8 @@ public class InputManager : MonoBehaviour
 	private SwipeController swipeController;
 	public static float CameraZDistance = 0;
 	private RaycastHit hit;
-	bool dragCat
+	private Cat DraggedCat;
+	bool dragging
 	{
 		get {
 			if (DraggedCat == null) return false;
@@ -18,7 +19,6 @@ public class InputManager : MonoBehaviour
 			}
 		}
 	}
-	private Cat DraggedCat;
 
 	private void Start()
 	{
@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
 
 	public void Update()
 	{
-		if (dragCat)
+		if (dragging)
 		{
 			DraggingCat();
 		}
@@ -50,16 +50,14 @@ public class InputManager : MonoBehaviour
 	{
 		if (Input.touchCount > 0)
 		{
-			// continue drag saved cat instance
-			// Vector3 touch = TouchPosition();
-			// Vector3 newPosition = new Vector3(touch.x, touch.y, CameraZDistance);
-			// DraggedCat.Move(newPosition);
+			// cat should be in state MOVE and therefore be following touch input
+
 			swipeController.DragCamera(TouchPosition());
 		}
 		else
 		{
+			DraggedCat.OnDragEnd();
 			DraggedCat = null;
-			// todo place
 		}
 	}
 
@@ -70,10 +68,9 @@ public class InputManager : MonoBehaviour
 		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 		{
 			// save cat instance in cat variable
-			DraggedCat = hit.collider.GetComponent<Cat>();
-			DraggedCat.OnDragStart();
+			hit.collider.GetComponent<Cat>().OnDragStart(DraggedCat);
+
 			swipeController.DragCamera(TouchPosition());
-			// todo make cat save previous position to return to if Place() fails - maybe better fitting in the cat.move() methid
 		}
 		else
 		{

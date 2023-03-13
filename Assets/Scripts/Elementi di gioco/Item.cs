@@ -7,6 +7,7 @@ public class Item : MonoBehaviour, IPlaceable
 {
 	private Camera mainCamera;
 	private float CameraZDistance;
+	public Cat myCat;
 
 	void Start() {
 		mainCamera = Camera.main;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -53,6 +54,7 @@ public class Cat : MonoBehaviour, IPlaceable
 	{
 		// nothing
 		// if cat is spawned into bed, go to REST
+		if (isDragged) SetState_DRAG();
 	}
 
 	void Update_REST()
@@ -95,9 +97,11 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void Update_BACKTOBED()
 	{
+		//TODO: if has item go back to item; else go back to bed
+
 		// walk animation
 
-		// moves towards owned bed at set speed
+		// moves towards owned item at set speed
 
 		// not able to be picked up
 		// when arrives, REST
@@ -171,58 +175,103 @@ public class Cat : MonoBehaviour, IPlaceable
 	#endregion
 
 	#region METHODS
-	public void OnDragStart()
+
+	public void OnDragStart(Cat TouchedCat)
 	{
-		isDragged = true;
+		if (state == CatState.BACKTOBED)
+		{
+			return;
+		}
+		TouchedCat = this;
+		return;
 	}
 
 	public void OnDragEnd()
 	{
-		isDragged = false;
+		Place();
 	}
 
 	public void Move(Vector3 newPosition) {
 		transform.position = newPosition;
 	}
 
-	public void Place() {
-		// PROBABLY THIS WILL TURN INTO A FUNCTION RETURNING AN ITEM TO SNAP TO
+	public void Place()
+	{
 
 		// sphere cast ray to see if anything is touching
-		Collider[] sphereHits = Physics.OverlapSphere(hit.transform.position, 2f);
+		Collider[] sphereHits = Physics.OverlapSphere(hit.transform.position, 2f, 1 << 7);
 
-		//TODO mettere in ordine i hit in modo che snappi a quello più vicino
-		
-		if (sphereHits.Length > 0 ) {
-			foreach (Collider sphereHit in sphereHits) {
-				// if it's touching a bed
-				if (sphereHit.gameObject.GetComponent<Bed>() == myBed) {
+		// se è vuoto esci
+		if (sphereHits.Length == 0)
+		{
+			SetState_BACKTOBED();
+			return;
+		}
+
+		//mettili in ordine di distanza
+		sphereHits = sphereHits.OrderBy(
+			x => Vector2.Distance(x.transform.position, transform.position)
+			).ToArray();
+
+		//deriva una lista di item dalla lista di collider
+		List<Item> items = GetItemsFromColliders(sphereHits);
+
+		foreach (Item item in items)
+		{
+			//if it's a bed
+			if (item.GetType() == typeof(Bed))
+			{
+				//se il letto non ha già un gatto assegnato
+				if (item.myCat == null)
+				{
+					CoupleTo(item);
+
+					// allinea gatto al letto e rest
+					transform.position = myBed.transform.position;
 					SetState_REST();
-				}
-				// if it's touching an item
-				else if (sphereHit.gameObject.GetComponent<Slot>() != null) {
-					hit.transform.position = sphereHit.transform.position;
-					SetState_WORK();
+					return;
 				}
 			}
+			// if it's an item
+			else if (item.GetType() == typeof(Item))
+			{
+				//se item non ha già un gatto assegnato
+				if (item.myCat == null)
+				{
+					CoupleTo(item);
+					hit.transform.position = item.transform.position;
+					SetState_WORK();
+					return;
+				}
+				
+			}
 		}
-		else
-		{
-			transform.position = PlaceFailed().transform.position;
-		}
+
+		//se non è successo nulla allora ha fallito, torna a letto
+		SetState_BACKTOBED();
 	}
 
-	private Item PlaceFailed()
+	private List<Item> GetItemsFromColliders(Collider[] colliders) {
+		List<Item> items = new List<Item>();
+		foreach (Collider collider in colliders) {
+			Item i = collider.GetComponent<Item>();
+			if (i == null) continue;
+			items.Add(i);
+		}
+		return items;
+	}
+
+	void CoupleTo(Item newItem)
 	{
-		if (myItem != null)
+		if (newItem.GetType() == typeof(Bed))
 		{
-			// if working on an item, go back to it
-			return myItem;
+			newItem.myCat = this;
+			myBed = (Bed)newItem;
 		}
 		else
 		{
-			// go back to bed
-			return myBed;
+			newItem.myCat = this;
+			myItem = newItem;
 		}
 	}
 	#endregion
