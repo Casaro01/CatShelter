@@ -52,9 +52,14 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void Update_IDLE()
 	{
-		// nothing
-		// if cat is spawned into bed, go to REST
-		if (isDragged) SetState_DRAG();
+		// do nothing
+		// no animation
+		// exit state if gets a bed assigned or is dragged
+		if (myBed)
+		{
+			transform.position = myBed.transform.position;
+			SetState_REST();
+		}
 	}
 
 	void Update_REST()
@@ -62,25 +67,18 @@ public class Cat : MonoBehaviour, IPlaceable
 		// (?) meow if clicked
 		// (?) idle routine (roam around the bed, change idle animations...)
 
-		// go to DRAG if begun to drag, called from InputManager
-		if (isDragged) SetState_DRAG();
+		// exits if OnDragStart() is called from InputManager
 	}
 
 	void Update_DRAG()
 	{
 		// dragged animation
 
-		if (isDragged)
-		{
-			Vector3 touch = InputManager.TouchPosition();
-			Vector3 newPosition = new Vector3(touch.x, touch.y, InputManager.CameraZDistance);
-			Move(newPosition);
-		}
-		else
-		{
-			Place();
-		}
-		
+		Vector3 touch = InputManager.TouchPosition();
+		Vector3 newPosition = new Vector3(touch.x, touch.y, InputManager.CameraZDistance);
+		Move(newPosition);
+
+		// exits state when OnDragEnd() is called from InputManager
 	}
 
 	void Update_WORK()
@@ -97,13 +95,12 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void Update_BACKTOBED()
 	{
-		//TODO: if has item go back to item; else go back to bed
-
 		// walk animation
 
-		// moves towards owned item at set speed
+		//TODO: if has item go back to item; else if has bed go back to bed
 
-		// not able to be picked up
+		// moves at set speed
+
 		// when arrives, REST
 	}
 
@@ -157,7 +154,6 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void SetState_DRAG()
 	{
-		isDragged = true;
 		// dragging animation
 	}
 
@@ -178,11 +174,11 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	public void OnDragStart(Cat TouchedCat)
 	{
-		if (state == CatState.BACKTOBED)
-		{
-			return;
-		}
+		//immune to drag if in BACKTOBED
+		if (state == CatState.BACKTOBED) { return; }
+
 		TouchedCat = this;
+		SetState_DRAG();
 		return;
 	}
 
