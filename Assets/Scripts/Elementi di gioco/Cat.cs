@@ -13,10 +13,10 @@ public class Cat : MonoBehaviour, IPlaceable
 	public CatState state = CatState.REST;
 	CatState prevState;
 
-	private Item myBed = null;
+	private Bed myBed = null;
 	private Item myItem = null;
 
-	private bool isDragged = false;
+	public bool isDragged = false;
 	private RaycastHit hit;
 
 	#endregion
@@ -190,23 +190,25 @@ public class Cat : MonoBehaviour, IPlaceable
 
 		// sphere cast ray to see if anything is touching
 		Collider[] sphereHits = Physics.OverlapSphere(hit.transform.position, 2f);
+
+		//TODO mettere in ordine i hit in modo che snappi a quello più vicino
 		
 		if (sphereHits.Length > 0 ) {
 			foreach (Collider sphereHit in sphereHits) {
-				// if it's touching an item
-				if (sphereHit.gameObject.GetComponent<Item>() != null) {
-					SetState_WORK()
+				// if it's touching a bed
+				if (sphereHit.gameObject.GetComponent<Bed>() == myBed) {
+					SetState_REST();
 				}
-				// if it's touching a slot
+				// if it's touching an item
 				else if (sphereHit.gameObject.GetComponent<Slot>() != null) {
 					hit.transform.position = sphereHit.transform.position;
-					// change bed
+					SetState_WORK();
 				}
 			}
 		}
 		else
 		{
-			PlaceFailed();
+			transform.position = PlaceFailed().transform.position;
 		}
 	}
 

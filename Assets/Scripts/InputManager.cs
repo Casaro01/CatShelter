@@ -9,7 +9,15 @@ public class InputManager : MonoBehaviour
 	private SwipeController swipeController;
 	public static float CameraZDistance = 0;
 	private RaycastHit hit;
-	bool dragCat = false;
+	bool dragCat
+	{
+		get {
+			if (DraggedCat == null) return false;
+			else {
+				return DraggedCat.isDragged;
+			}
+		}
+	}
 	private Cat DraggedCat;
 
 	private void Start()
@@ -50,7 +58,6 @@ public class InputManager : MonoBehaviour
 		}
 		else
 		{
-			dragCat = false;
 			DraggedCat = null;
 			// todo place
 		}
@@ -62,7 +69,6 @@ public class InputManager : MonoBehaviour
 
 		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 		{
-			dragCat = true;
 			// save cat instance in cat variable
 			DraggedCat = hit.collider.GetComponent<Cat>();
 			DraggedCat.OnDragStart();
