@@ -13,6 +13,7 @@ public class Cat : MonoBehaviour, IPlaceable
 	public enum CatState { IDLE, REST, DRAG, WORK, BACKTOBED };
 	public CatState state = CatState.REST;
 	CatState prevState;
+	public InputManager inputManager;
 
 	private Bed myBed = null;
 	private Item myItem = null;
@@ -52,13 +53,12 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void Update_IDLE()
 	{
-		// do nothing
-		// no animation
+		// do nothing, no animation
+			
 		// exit state if gets a bed assigned or is dragged
-		if (myBed)
+		if (myBed != null)
 		{
-			transform.position = myBed.transform.position;
-			SetState_REST();
+			ChangeState(CatState.REST);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class Cat : MonoBehaviour, IPlaceable
 	{
 		// dragged animation
 
-		Vector3 touch = InputManager.TouchPosition();
+		Vector3 touch = inputManager.TouchPosition();
 		Vector3 newPosition = new Vector3(touch.x, touch.y, InputManager.CameraZDistance);
 		Move(newPosition);
 
@@ -98,10 +98,10 @@ public class Cat : MonoBehaviour, IPlaceable
 		// walk animation
 
 		//TODO: if has item go back to item; else if has bed go back to bed
-
+		
 		// moves at set speed
 
-		// when arrives, REST
+		// if arrives within a certain range to destination, REST or WORK
 	}
 
 	#endregion
@@ -146,27 +146,24 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void SetState_REST()
 	{
-		// if coming from BACKTOBED is draggable again
-
-		// align with bed
-		// rest animation
+		transform.position = myBed.transform.position;
+		// rest animation start
 	}
 
 	void SetState_DRAG()
 	{
-		// dragging animation
+		// dragging animation start
 	}
 
 	void SetState_WORK()
 	{
 		// align with item
-		// play animation
+		// play animation start
 	}
 
 	void SetState_BACKTOBED()
 	{
-		// is not draggable
-		// run animation
+		// walk animation start
 	}
 	#endregion
 
@@ -178,8 +175,7 @@ public class Cat : MonoBehaviour, IPlaceable
 		if (state == CatState.BACKTOBED) { return; }
 
 		TouchedCat = this;
-		SetState_DRAG();
-		return;
+		ChangeState(CatState.DRAG);
 	}
 
 	public void OnDragEnd()
@@ -197,54 +193,45 @@ public class Cat : MonoBehaviour, IPlaceable
 		// sphere cast ray to see if anything is touching
 		Collider[] sphereHits = Physics.OverlapSphere(hit.transform.position, 2f, 1 << 7);
 
-		// se è vuoto esci
+		// if nothing is nearby, backtobed
 		if (sphereHits.Length == 0)
 		{
-			SetState_BACKTOBED();
+			ChangeState(CatState.BACKTOBED);
 			return;
 		}
 
-		//mettili in ordine di distanza
+		// sort any colliders by proximity
 		sphereHits = sphereHits.OrderBy(
 			x => Vector2.Distance(x.transform.position, transform.position)
 			).ToArray();
 
-		//deriva una lista di item dalla lista di collider
+		// derives item list from collider list
 		List<Item> items = GetItemsFromColliders(sphereHits);
 
 		foreach (Item item in items)
 		{
-			//if it's a bed
-			if (item.GetType() == typeof(Bed))
+			//if it's a bed AND it doesn't already have a cat assigned
+			if (item.GetType() == typeof(Bed) && item.myCat == null)
 			{
-				//se il letto non ha già un gatto assegnato
-				if (item.myCat == null)
-				{
-					CoupleTo(item);
-
-					// allinea gatto al letto e rest
-					transform.position = myBed.transform.position;
-					SetState_REST();
-					return;
-				}
+				CoupleTo(item);
+				// align cat to bed and REST
+				transform.position = myBed.transform.position;
+				ChangeState(CatState.REST);
+				return;
 			}
-			// if it's an item
-			else if (item.GetType() == typeof(Item))
+
+			// if it's an item AND it doesn't already have a cat assigned
+			else if (item.GetType() == typeof(Item) && item.myCat == null)
 			{
-				//se item non ha già un gatto assegnato
-				if (item.myCat == null)
-				{
-					CoupleTo(item);
-					hit.transform.position = item.transform.position;
-					SetState_WORK();
-					return;
-				}
-				
+				CoupleTo(item);
+				hit.transform.position = item.transform.position;
+				ChangeState(CatState.WORK);
+				return;
 			}
 		}
 
-		//se non è successo nulla allora ha fallito, torna a letto
-		SetState_BACKTOBED();
+		// if code arrives here, foreach failed and no item in list is available: go back to bed
+		ChangeState(CatState.BACKTOBED);
 	}
 
 	private List<Item> GetItemsFromColliders(Collider[] colliders) {
@@ -259,14 +246,14 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	void CoupleTo(Item newItem)
 	{
+		newItem.myCat = this;
+
 		if (newItem.GetType() == typeof(Bed))
 		{
-			newItem.myCat = this;
 			myBed = (Bed)newItem;
 		}
 		else
 		{
-			newItem.myCat = this;
 			myItem = newItem;
 		}
 	}

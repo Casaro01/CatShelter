@@ -280,6 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13270f60b4c531149a8193565e982678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCat: {fileID: 0}
 --- !u!65 &200696064
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -438,7 +439,7 @@ GameObject:
   - component: {fileID: 339534106}
   - component: {fileID: 339534105}
   m_Layer: 15
-  m_Name: photo_2023-02-07_12-32-46
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,6 +614,7 @@ MonoBehaviour:
   swipeSpeed: 0.7
   smoothTime: 0.1
   dragSpeed: 0.2
+  lastPosition: {x: 0, y: 0}
   moveTowardsSpeed: 1
   cam: {fileID: 519420031}
 --- !u!1 &628835862
@@ -626,7 +628,7 @@ GameObject:
   - component: {fileID: 628835863}
   - component: {fileID: 628835864}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -688,7 +690,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630923186}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.26, y: -3.46, z: 11}
+  m_LocalPosition: {x: -0.61, y: -5.4, z: 11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -770,6 +772,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8b31fb43a2c6547aea3e7d02550a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
+  inputManager: {fileID: 628835864}
+  isDragged: 0
 --- !u!1 &1163019345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,6 +1233,7 @@ MonoBehaviour:
   swipeSpeed: 0.08
   smoothTime: 0.25
   dragSpeed: 0.2
+  lastPosition: {x: 0, y: 0}
   moveTowardsSpeed: 1
   cam: {fileID: 0}
 --- !u!81 &1993296530

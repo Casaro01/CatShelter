@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-	public static Camera mainCamera;
+	public  Camera mainCamera;
 	private SwipeController swipeController;
 	public static float CameraZDistance = 0;
 	private RaycastHit hit;
@@ -37,7 +37,7 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	public static Vector3 TouchPosition()
+	public Vector3 TouchPosition()
 	{
 		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates
 		Touch touch = Input.GetTouch(0);
@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
 	{
 		if (Input.touchCount > 0)
 		{
-			// cat should be in state MOVE and therefore be following touch input
+			// cat should be in state DRAG and therefore be following touch input
 
 			swipeController.DragCamera(TouchPosition());
 		}
@@ -69,7 +69,6 @@ public class InputManager : MonoBehaviour
 		{
 			// save cat instance in cat variable
 			hit.collider.GetComponent<Cat>().OnDragStart(DraggedCat);
-
 			swipeController.DragCamera(TouchPosition());
 		}
 		else
