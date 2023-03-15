@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Cat : MonoBehaviour, IPlaceable
+public class Cat : MonoBehaviour
 {
 	#region VARS
 
@@ -177,10 +177,6 @@ public class Cat : MonoBehaviour, IPlaceable
 	{
 		ChangeState(CatState.IDLE);
 		//Place();
-	}
-
-	public void Move(Vector3 newPosition) {
-		transform.position = newPosition;
 	}
 
 	public void Place()
