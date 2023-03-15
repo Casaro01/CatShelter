@@ -14,9 +14,7 @@ public class InputManager : MonoBehaviour
 	{
 		get {
 			if (DraggedCat == null) return false;
-			else {
-				return DraggedCat.isDragged;
-			}
+			else return true;
 		}
 	}
 
@@ -37,21 +35,17 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	public Vector3 TouchPosition()
-	{
-		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates
-		Touch touch = Input.GetTouch(0);
-		Vector3 ScreenPosition = new Vector3(touch.position.x, touch.position.y, CameraZDistance);
-		Vector3 WorldPosition = mainCamera.ScreenToWorldPoint(ScreenPosition);
-		return WorldPosition;
-	}
-
 	private void DraggingCat()
 	{
 		if (Input.touchCount > 0)
 		{
-			// cat should be in state DRAG and therefore be following touch input
+			// follow touch with cat
+			Vector3 touch = TouchPosition();
+			//touch = new Vector3(0, 0, 10);
+			Vector3 newPosition = new Vector3(touch.x, touch.y, 0);
+			DraggedCat.transform.position = newPosition;
 
+			// move camera when reaching sides
 			swipeController.DragCamera(TouchPosition());
 		}
 		else
@@ -67,13 +61,23 @@ public class InputManager : MonoBehaviour
 
 		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 		{
-			// save cat instance in cat variable
-			hit.collider.GetComponent<Cat>().OnDragStart(DraggedCat);
-			swipeController.DragCamera(TouchPosition());
+			// save cat instance in cat variable through cat method
+			DraggedCat = hit.collider.GetComponent<Cat>().OnDragStart();
+			
+			// even if the drag has already started, we don't actually move anything until next frame
 		}
 		else
 		{
 			swipeController.SwipeCamera(TouchPosition().x);
 		}
+	}
+
+	public Vector3 TouchPosition()	
+	{
+		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates
+		Touch touch = Input.GetTouch(0);
+		Vector3 ScreenPosition = new Vector3(touch.position.x, touch.position.y, CameraZDistance);
+		Vector3 WorldPosition = mainCamera.ScreenToWorldPoint(ScreenPosition);
+		return WorldPosition;
 	}
 }

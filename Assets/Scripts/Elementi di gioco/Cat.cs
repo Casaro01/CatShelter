@@ -13,12 +13,10 @@ public class Cat : MonoBehaviour, IPlaceable
 	public enum CatState { IDLE, REST, DRAG, WORK, BACKTOBED };
 	public CatState state = CatState.REST;
 	CatState prevState;
-	public InputManager inputManager;
 
 	private Bed myBed = null;
 	private Item myItem = null;
 
-	public bool isDragged = false;
 	private RaycastHit hit;
 
 	#endregion
@@ -74,9 +72,6 @@ public class Cat : MonoBehaviour, IPlaceable
 	{
 		// dragged animation
 
-		Vector3 touch = inputManager.TouchPosition();
-		Vector3 newPosition = new Vector3(touch.x, touch.y, InputManager.CameraZDistance);
-		Move(newPosition);
 
 		// exits state when OnDragEnd() is called from InputManager
 	}
@@ -169,18 +164,19 @@ public class Cat : MonoBehaviour, IPlaceable
 
 	#region METHODS
 
-	public void OnDragStart(Cat TouchedCat)
+	public Cat OnDragStart()
 	{
 		//immune to drag if in BACKTOBED
-		if (state == CatState.BACKTOBED) { return; }
+		if (state == CatState.BACKTOBED) { return null; }
 
-		TouchedCat = this;
 		ChangeState(CatState.DRAG);
+		return this;
 	}
 
 	public void OnDragEnd()
 	{
-		Place();
+		ChangeState(CatState.IDLE);
+		//Place();
 	}
 
 	public void Move(Vector3 newPosition) {
@@ -190,7 +186,7 @@ public class Cat : MonoBehaviour, IPlaceable
 	public void Place()
 	{
 
-		// sphere cast ray to see if anything is touching
+		// sphere cast to see if anything is touching
 		Collider[] sphereHits = Physics.OverlapSphere(hit.transform.position, 2f, 1 << 7);
 
 		// if nothing is nearby, backtobed
