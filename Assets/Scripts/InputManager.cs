@@ -8,7 +8,6 @@ public class InputManager : MonoBehaviour
 	public  Camera mainCamera;
 	private SwipeController swipeController;
 	public static float cameraZDistance = 0;
-	public float magicNumber = (float)-14.2815361; // don't ask.
 	private RaycastHit hit;
 	private Cat DraggedCat;
 	bool dragging
@@ -42,7 +41,8 @@ public class InputManager : MonoBehaviour
 		{
 			// follow touch with cat
 			Vector3 touch = TouchPosition();
-			Vector3 newPosition = new Vector3(touch.x, touch.y, magicNumber);
+			Vector3 newPosition = new Vector3(touch.x, touch.y, 0);
+			Debug.Log(newPosition);	
 			DraggedCat.transform.position = newPosition;
 
 			// move camera when reaching sides
