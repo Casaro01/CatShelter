@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
     {
-    public float minX, maxX;
     public float swipeSpeed = 0.5f; // Velocità di transizione
     public float smoothTime = 0.3f; // Tempo di transizione
     public float dragSpeed = 0.2f; //velocità di drag
@@ -11,14 +10,24 @@ public class CameraControl : MonoBehaviour
     private Vector3 velocity = Vector3.zero; // Velocità di transizione
     [SerializeField] private float moveTowardsSpeed = 0.5f;
     public Camera cam;
+    [SerializeField] private SpriteRenderer bkg;
+    float bkgMinX, bkgMaxX;
     Vector3 newPosition;
-	private void Start()
+    private void Awake()
+        {
+        bkgMinX=bkg.transform.position.x-bkg.bounds.size.x/2f;
+        bkgMaxX=bkg.transform.position.x+bkg.bounds.size.x/2f;
+        }
+    private void Start()
 	{
         lastPosition = new Vector2(transform.position.x, transform.position.y);
 	}
 
     float InBounds(float input)
     {
+        float camWidht = cam.orthographicSize * cam.aspect;
+        float maxX = bkgMaxX - camWidht;
+        float minX = bkgMinX + camWidht;
         return Mathf.Clamp(input, minX, maxX);
 	}
 
@@ -35,20 +44,14 @@ public class CameraControl : MonoBehaviour
 		        InBounds((transform.position.x - deltaX) * swipeSpeed),
                 transform.position.y,
                 transform.position.z);
-            /*Vector3 newPosition = new Vector3(
-                InBounds((transform.position.x - deltaX) * Time.deltaTime),
-                transform.position.y,
-                transform.position.z);*/
 
             // Applica la transizione graduale alla nuova posizione
-            //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
             transform.position = new Vector3(
                 Mathf.MoveTowards(transform.position.x, newPosition.x, moveTowardsSpeed),
                 Mathf.MoveTowards(transform.position.y, newPosition.y, moveTowardsSpeed),
                 Mathf.MoveTowards(transform.position.z, newPosition.z, moveTowardsSpeed)
             );
         }
-        //transform.position = Vector3.MoveTowards(transform.position, newPosition, moveTowardsSpeed);
         //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;
     }

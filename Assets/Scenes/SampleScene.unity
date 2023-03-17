@@ -609,14 +609,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50b1efc091427343830d45e8fa4e0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -4.6
-  maxX: 4.6
   swipeSpeed: 1
   smoothTime: 0.1
   dragSpeed: 0.2
   lastPosition: {x: 0, y: 0}
   moveTowardsSpeed: 1.5
   cam: {fileID: 519420031}
+  bkg: {fileID: 339534105}
 --- !u!1 &628835862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,14 +1226,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50b1efc091427343830d45e8fa4e0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -4.6
-  maxX: 4.6
   swipeSpeed: 0.08
   smoothTime: 0.25
   dragSpeed: 0.2
   lastPosition: {x: 0, y: 0}
   moveTowardsSpeed: 1
   cam: {fileID: 0}
+  bkg: {fileID: 0}
 --- !u!81 &1993296530
 AudioListener:
   m_ObjectHideFlags: 0
