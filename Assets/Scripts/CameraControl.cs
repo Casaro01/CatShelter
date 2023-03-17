@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class SwipeController : MonoBehaviour
+public class CameraControl : MonoBehaviour
     {
     public float minX, maxX;
     public float swipeSpeed = 0.5f; // Velocità di transizione

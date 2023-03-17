@@ -6,7 +6,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
 	public  Camera mainCamera;
-	private SwipeController swipeController;
+	private CameraControl cameraController;//swipeController;
 	public static float cameraZDistance = 0;
 	private RaycastHit hit;
 	private Cat DraggedCat;
@@ -20,7 +20,7 @@ public class InputManager : MonoBehaviour
 
 	private void Start()
 	{
-		swipeController = mainCamera.GetComponent<SwipeController>();
+		cameraController = mainCamera.GetComponent<CameraControl>();
 	}
 
 	public void Update()
@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
 			DraggedCat.transform.position = newPosition;
 
 			// move camera when reaching sides
-			swipeController.DragCamera(TouchPosition());
+			cameraController.DragCamera(TouchPosition());
 		}
 		else
 		{
@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour
 		}
 		else
 		{
-			swipeController.SwipeCamera(TouchPosition().x);
+			cameraController.SwipeCamera(TouchPosition().x);
 		}
 	}
 
