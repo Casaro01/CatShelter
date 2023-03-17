@@ -9,8 +9,9 @@ public class CameraControl : MonoBehaviour
     public float dragSpeed = 0.2f; //velocità di drag
     public Vector2 lastPosition; // Ultima posizione toccata
     private Vector3 velocity = Vector3.zero; // Velocità di transizione
-    [SerializeField] private float moveTowardsSpeed = 1f;
+    [SerializeField] private float moveTowardsSpeed = 0.5f;
     public Camera cam;
+    Vector3 newPosition;
 	private void Start()
 	{
         lastPosition = new Vector2(transform.position.x, transform.position.y);
@@ -27,19 +28,26 @@ public class CameraControl : MonoBehaviour
             lastPosition = enterPosition;  
 		Debug.Log("Swiping: " + input);
         float deltaX = input - lastPosition.x;
+        Debug.Log(deltaX);
         // Calcola la nuova posizione della camera sull'asse X
-        Vector3 newPosition = new Vector3(
-		    InBounds(transform.position.x - deltaX * swipeSpeed),
-            transform.position.y,
-            transform.position.z);
-		
-		// Applica la transizione graduale alla nuova posizione
-		//transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
-		transform.position = new Vector3(
-            Mathf.MoveTowards(transform.position.x, newPosition.x, moveTowardsSpeed),
-            Mathf.MoveTowards(transform.position.y, newPosition.y, moveTowardsSpeed),
-            Mathf.MoveTowards(transform.position.z, newPosition.z, moveTowardsSpeed)
-        );
+        if (Mathf.Abs(deltaX) >= 0.01) {
+            newPosition = new Vector3(
+		        InBounds((transform.position.x - deltaX) * swipeSpeed),
+                transform.position.y,
+                transform.position.z);
+            /*Vector3 newPosition = new Vector3(
+                InBounds((transform.position.x - deltaX) * Time.deltaTime),
+                transform.position.y,
+                transform.position.z);*/
+
+            // Applica la transizione graduale alla nuova posizione
+            //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
+            transform.position = new Vector3(
+                Mathf.MoveTowards(transform.position.x, newPosition.x, moveTowardsSpeed),
+                Mathf.MoveTowards(transform.position.y, newPosition.y, moveTowardsSpeed),
+                Mathf.MoveTowards(transform.position.z, newPosition.z, moveTowardsSpeed)
+            );
+        }
         //transform.position = Vector3.MoveTowards(transform.position, newPosition, moveTowardsSpeed);
         //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;

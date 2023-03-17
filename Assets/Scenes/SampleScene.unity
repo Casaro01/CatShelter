@@ -611,11 +611,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minX: -4.6
   maxX: 4.6
-  swipeSpeed: 0.7
+  swipeSpeed: 1
   smoothTime: 0.1
   dragSpeed: 0.2
   lastPosition: {x: 0, y: 0}
-  moveTowardsSpeed: 1
+  moveTowardsSpeed: 1.5
   cam: {fileID: 519420031}
 --- !u!1 &628835862
 GameObject:
@@ -662,7 +662,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 519420031}
-  magicNumber: -14.281536
 --- !u!1 &630923186
 GameObject:
   m_ObjectHideFlags: 0
