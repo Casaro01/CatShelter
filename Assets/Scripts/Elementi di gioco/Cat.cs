@@ -17,6 +17,10 @@ public class Cat : MonoBehaviour
 	private Bed myBed = null;
 	private Item myItem = null;
 
+	private float distToBed { get { return Vector3.Distance(transform.position, myBed.transform.position); } }
+	public float backSpeed = 0.001f;
+
+	public float placeRadius = 1f;
 	private RaycastHit hit;
 
 	#endregion
@@ -72,7 +76,6 @@ public class Cat : MonoBehaviour
 	{
 		// dragged animation
 
-
 		// exits state when OnDragEnd() is called from InputManager
 	}
 
@@ -82,21 +85,19 @@ public class Cat : MonoBehaviour
 
 		// stays on item for x time
 		// if still on item when time runs out give money
+		// work can be cancelled but UI prompt pops up kinda like in clash of clans
 
-		// leaves item if:
-		//		time runs out -> BACKTOBED
-		//		dragged away --> DRAG
+		// leaves item if dragged away --> DRAG
 	}
 
 	void Update_BACKTOBED()
 	{
-		// walk animation
+		// this shouldn't happen, but if cat has no bed, go idle instead
+		if (myBed == null) { ChangeState(CatState.IDLE); }
+		// if close enough to bed, go to REST
+		if (distToBed <= 0.3) { ChangeState(CatState.REST); }
 
-		//TODO: if has item go back to item; else if has bed go back to bed
-		
-		// moves at set speed
-
-		// if arrives within a certain range to destination, REST or WORK
+		transform.position = Vector3.MoveTowards(transform.position, myBed.transform.position, backSpeed);
 	}
 
 	#endregion
@@ -152,7 +153,7 @@ public class Cat : MonoBehaviour
 
 	void SetState_WORK()
 	{
-		// align with item
+		transform.position = myItem.transform.position;
 		// play animation start
 	}
 
@@ -166,8 +167,8 @@ public class Cat : MonoBehaviour
 
 	public Cat OnDragStart()
 	{
-		//immune to drag if in BACKTOBED
-		if (state == CatState.BACKTOBED) { return null; }
+		//immune to drag if in BACKTOBED or WORKx	
+		if (state == CatState.BACKTOBED || state == CatState.WORK) { return null; }
 
 		ChangeState(CatState.DRAG);
 		return this;
@@ -176,14 +177,13 @@ public class Cat : MonoBehaviour
 	public void OnDragEnd()
 	{
 		ChangeState(CatState.IDLE);
-		//Place();
+		Place();
 	}
 
 	public void Place()
 	{
-
-		// sphere cast to see if anything is touching
-		Collider[] sphereHits = Physics.OverlapSphere(hit.transform.position, 2f, 1 << 7);
+		// sphere cast to see if any item is touching
+		Collider[] sphereHits = Physics.OverlapSphere(transform.position, placeRadius, 1 << 7);
 
 		// if nothing is nearby, backtobed
 		if (sphereHits.Length == 0)
@@ -206,8 +206,6 @@ public class Cat : MonoBehaviour
 			if (item.GetType() == typeof(Bed) && item.myCat == null)
 			{
 				CoupleTo(item);
-				// align cat to bed and REST
-				transform.position = myBed.transform.position;
 				ChangeState(CatState.REST);
 				return;
 			}
@@ -216,7 +214,6 @@ public class Cat : MonoBehaviour
 			else if (item.GetType() == typeof(Item) && item.myCat == null)
 			{
 				CoupleTo(item);
-				hit.transform.position = item.transform.position;
 				ChangeState(CatState.WORK);
 				return;
 			}

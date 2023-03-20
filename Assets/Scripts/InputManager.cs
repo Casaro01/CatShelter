@@ -55,10 +55,15 @@ public class InputManager : MonoBehaviour
 	{
 		//listen to new touches
 		if (Input.touchCount > 0) {
-			// if touch on cat
+			// if user's touch is on cat
 			if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 			{
-				ChangeState(InputState.DRAG);
+				// save pointer to cat instance in variable
+				DraggedCat = hit.collider.GetComponent<Cat>().OnDragStart();
+
+				// if cat validated the OnDragStart, then go to drag; else display message
+				if (DraggedCat != null) { ChangeState(InputState.DRAG); }
+				else { Debug.Log("Gatto non disponibile!"); }
 			}
 
 			// TODO else if raycast on UI --> uiManager and changestate(UI)
@@ -86,7 +91,6 @@ public class InputManager : MonoBehaviour
 		else
 		{
 			DraggedCat.OnDragEnd();
-			DraggedCat = null;
 			ChangeState(InputState.NULL);
 		}
 	}
@@ -134,13 +138,12 @@ public class InputManager : MonoBehaviour
 
 	void SetState_NULL()
 	{
-		
+		DraggedCat = null;
 	}
 
 	void SetState_DRAG()
 	{
-		// save cat instance in cat variable through cat method
-		DraggedCat = hit.collider.GetComponent<Cat>().OnDragStart();
+		
 	}
 
 	void SetState_SWIPE()
