@@ -7,9 +7,8 @@ public class CameraControl : MonoBehaviour
     public float smoothTime = 0.3f; // Tempo di transizione
     public float dragSpeed = 0.2f; //velocità di drag
     public Vector2 lastPosition; // Ultima posizione toccata
-    private Vector3 velocity = Vector3.zero; // Velocità di transizione
-    [SerializeField] private float moveTowardsSpeed = 0.5f;
-    public Camera cam;
+    public float moveTowardsSpeed = 0.5f;
+    [SerializeField] private Camera cam;
     [SerializeField] private SpriteRenderer bkg;
     float bkgMinX, bkgMaxX;
     Vector3 newPosition;
@@ -39,19 +38,19 @@ public class CameraControl : MonoBehaviour
         float deltaX = input - lastPosition.x;
         Debug.Log(deltaX);
         // Calcola la nuova posizione della camera sull'asse X
-        if (Mathf.Abs(deltaX) >= 0.01) {
             newPosition = new Vector3(
-		        InBounds((transform.position.x - deltaX) * swipeSpeed),
+                InBounds((transform.position.x - deltaX)*swipeSpeed),
                 transform.position.y,
                 transform.position.z);
 
-            // Applica la transizione graduale alla nuova posizione
-            transform.position = new Vector3(
-                Mathf.MoveTowards(transform.position.x, newPosition.x, moveTowardsSpeed),
-                Mathf.MoveTowards(transform.position.y, newPosition.y, moveTowardsSpeed),
-                Mathf.MoveTowards(transform.position.z, newPosition.z, moveTowardsSpeed)
-            );
-        }
+        // Applica la transizione graduale alla nuova posizione
+        /*transform.position = new Vector3(
+            Mathf.MoveTowards(transform.position.x, newPosition.x, moveTowardsSpeed),
+            Mathf.MoveTowards(transform.position.y, newPosition.y, moveTowardsSpeed),
+            Mathf.MoveTowards(transform.position.z, newPosition.z, moveTowardsSpeed)
+        );*/
+        transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed);
+        
         //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;
     }
