@@ -5,44 +5,79 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-	public  Camera mainCamera;
+	#region VARS
+	// state variables
+	public enum InputState { NULL, DRAG, SWIPE, UI };
+	public InputState state = InputState.NULL;
+	InputState prevState;
+
+	// camera and touch variables
+	public Camera mainCamera;
 	private CameraControl cameraController;//swipeController;
 	public static float cameraZDistance = 0;
 	private RaycastHit hit;
+
+	//cat drag variables
 	private Cat DraggedCat;
-	bool dragging
-	{
-		get {
-			if (DraggedCat == null) return false;
-			else return true;
-		}
-	}
+
+	#endregion
+
+	#region UPDATE
 
 	private void Start()
 	{
 		cameraController = mainCamera.GetComponent<CameraControl>();
 	}
 
-	public void Update()
+	void Update()
 	{
-		if (dragging)
+		switch (state)
 		{
-			DraggingCat();
-		}
-		else if (Input.touchCount > 0)
-		{
-			NewTouch();
+			case InputState.NULL:
+				Update_NULL();
+				break;
+
+			case InputState.DRAG:
+				Update_DRAG();
+				break;
+
+			case InputState.SWIPE:
+				Update_SWIPE();
+				break;
+
+			case InputState.UI:
+				Update_UI();
+				break;
 		}
 	}
 
-	private void DraggingCat()
+	void Update_NULL()
+	{
+		//listen to new touches
+		if (Input.touchCount > 0) {
+			// if touch on cat
+			if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
+			{
+				ChangeState(InputState.DRAG);
+			}
+
+			// TODO else if raycast on UI --> uiManager and changestate(UI)
+
+			// else user is swiping camera
+			else
+			{
+				ChangeState(InputState.SWIPE);
+			}
+		}
+	}
+
+	void Update_DRAG()
 	{
 		if (Input.touchCount > 0)
 		{
 			// follow touch with cat
 			Vector3 touch = TouchPosition();
 			Vector3 newPosition = new Vector3(touch.x, touch.y, 0);
-			Debug.Log(newPosition);	
 			DraggedCat.transform.position = newPosition;
 
 			// move camera when reaching sides
@@ -52,25 +87,75 @@ public class InputManager : MonoBehaviour
 		{
 			DraggedCat.OnDragEnd();
 			DraggedCat = null;
+			ChangeState(InputState.NULL);
 		}
 	}
 
-	private void NewTouch()
+	void Update_SWIPE()
 	{
-		// todo if raycast.hit = UI  --> uiManager
+		if (Input.touchCount > 0) { cameraController.SwipeCamera(TouchPosition().x); }
+		else { ChangeState(InputState.NULL); }
+	}
 
-		if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
+	void Update_UI()
+	{
+		// UI stuff
+	}
+
+	#endregion
+
+	#region CHANGESTATE
+	private void ChangeState(InputState newState)
+	{
+		if (state == newState) return;
+
+		prevState = state;
+		state = newState;
+
+		switch (state)
 		{
-			// save cat instance in cat variable through cat method
-			DraggedCat = hit.collider.GetComponent<Cat>().OnDragStart();
-			
-			// even if the drag has already started, we don't actually move anything until next frame
-		}
-		else
-		{
-			cameraController.SwipeCamera(TouchPosition().x);
+			case InputState.NULL:
+				SetState_NULL();
+				break;
+
+			case InputState.DRAG:
+				SetState_DRAG();
+				break;
+
+			case InputState.SWIPE:
+				SetState_SWIPE();
+				break;
+
+			case InputState.UI:
+				SetState_UI();
+				break;
 		}
 	}
+
+	void SetState_NULL()
+	{
+		
+	}
+
+	void SetState_DRAG()
+	{
+		// save cat instance in cat variable through cat method
+		DraggedCat = hit.collider.GetComponent<Cat>().OnDragStart();
+	}
+
+	void SetState_SWIPE()
+	{
+		
+	}
+
+	void SetState_UI()
+	{
+
+	}
+
+	#endregion
+
+	#region METHODS
 
 	public Vector3 TouchPosition()	
 	{
@@ -80,4 +165,6 @@ public class InputManager : MonoBehaviour
 		Vector3 WorldPosition = mainCamera.ScreenToWorldPoint(ScreenPosition);
 		return WorldPosition;
 	}
+
+	#endregion
 }
