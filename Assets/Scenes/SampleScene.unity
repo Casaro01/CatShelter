@@ -245,9 +245,9 @@ GameObject:
   - component: {fileID: 200696066}
   - component: {fileID: 200696065}
   - component: {fileID: 200696064}
-  - component: {fileID: 200696063}
+  - component: {fileID: 200696067}
   m_Layer: 7
-  m_Name: Item
+  m_Name: Toy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,19 +268,6 @@ Transform:
   m_Father: {fileID: 1163019346}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &200696063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200696061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13270f60b4c531149a8193565e982678, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myCat: {fileID: 0}
 --- !u!65 &200696064
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -344,6 +331,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 200696061}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &200696067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200696061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1acc9037275655c48b65de90199c2063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCat: {fileID: 0}
+  objectiveTime: 0
+  currentTime: 0
+  reward: 0
+  state: 0
 --- !u!1 &214428944
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,8 +694,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630923186}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000009536743}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1163019346}

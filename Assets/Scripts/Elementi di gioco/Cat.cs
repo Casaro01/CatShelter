@@ -15,7 +15,7 @@ public class Cat : MonoBehaviour
 	CatState prevState;
 
 	private Bed myBed = null;
-	private Item myItem = null;
+	private Item myToy = null;
 
 	private float distToBed { get { return Vector3.Distance(transform.position, myBed.transform.position); } }
 	public float backSpeed = 0.01f;
@@ -153,7 +153,7 @@ public class Cat : MonoBehaviour
 
 	void SetState_WORK()
 	{
-		transform.position = myItem.transform.position;
+		transform.position = myToy.transform.position;
 		// play animation start
 	}
 
@@ -211,7 +211,7 @@ public class Cat : MonoBehaviour
 			}
 
 			// if it's an item AND it doesn't already have a cat assigned
-			else if (item.GetType() == typeof(Item) && item.myCat == null)
+			else if (item.GetType() == typeof(Toy) && item.myCat == null)
 			{
 				CoupleTo(item);
 				ChangeState(CatState.WORK);
@@ -243,7 +243,7 @@ public class Cat : MonoBehaviour
 		}
 		else
 		{
-			myItem = newItem;
+			myToy = (Toy)newItem;
 		}
 	}
 	#endregion
