@@ -11,16 +11,16 @@ public class Cat : MonoBehaviour
 	// todo int rarity (new object? cat subclass?) : decides how rare the cat is to find and how much energy it gets
 	// todo int energy (int with complex management, to do after rarity) : can grow with time, how much and how often depends on rarity; static modifier to how much time an action takes
 	public enum CatState { IDLE, REST, DRAG, WORK, BACKTOBED };
-	public CatState state = CatState.REST;
+	public CatState state = CatState.IDLE;
 	CatState prevState;
 
 	private Bed myBed = null;
 	private Item myItem = null;
 
 	private float distToBed { get { return Vector3.Distance(transform.position, myBed.transform.position); } }
-	public float backSpeed = 0.001f;
+	public float backSpeed = 0.01f;
 
-	public float placeRadius = 1f;
+	public float placeRadius = 0.5f;
 	private RaycastHit hit;
 
 	#endregion
@@ -93,7 +93,7 @@ public class Cat : MonoBehaviour
 	void Update_BACKTOBED()
 	{
 		// this shouldn't happen, but if cat has no bed, go idle instead
-		if (myBed == null) { ChangeState(CatState.IDLE); }
+		if (myBed == null) { ChangeState(CatState.IDLE); return; }
 		// if close enough to bed, go to REST
 		if (distToBed <= 0.3) { ChangeState(CatState.REST); }
 
