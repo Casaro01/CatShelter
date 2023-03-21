@@ -67,9 +67,9 @@ public class InputManager : MonoBehaviour
 			}
 
 			// TODO else if raycast on UI --> uiManager and changestate(UI)
-
+			
 			// else user is swiping camera
-			else
+			else if(Input.touches[0].phase == TouchPhase.Moved)
 			{
 				ChangeState(InputState.SWIPE);
 			}
@@ -97,7 +97,13 @@ public class InputManager : MonoBehaviour
 
 	void Update_SWIPE()
 	{
-		if (Input.touchCount > 0) { cameraController.SwipeCamera(TouchPosition().x); }
+		if (Input.touchCount > 0) { 
+			if(Input.touches[0].phase == TouchPhase.Moved)
+				cameraController.SwipeCamera(TouchPosition().x); 
+			//else if(Input.touches[0].phase == TouchPhase.Stationary)
+			//	ChangeState(InputState.NULL);
+			}
+		//if (Input.touchCount > 0) { cameraController.SwipeCamera(TouchPositionScreenSpace().x); }
 		else { ChangeState(InputState.NULL); }
 	}
 
@@ -159,7 +165,13 @@ public class InputManager : MonoBehaviour
 	#endregion
 
 	#region METHODS
+	public Vector3 TouchPositionScreenSpace() {
+		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates
+		Touch touch = Input.GetTouch(0);
+		Vector3 ScreenPosition = new Vector3(touch.position.x, touch.position.y, cameraZDistance);
+		return ScreenPosition;
 
+		}
 	public Vector3 TouchPosition()	
 	{
 		//get screen position in pixel resolution of touch, then transform it into gameworld coordinates

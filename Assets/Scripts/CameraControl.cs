@@ -30,19 +30,35 @@ public class CameraControl : MonoBehaviour
 	}
 
     public void SwipeCamera(float input) {
+        lastPosition = transform.position;
         Vector2 enterPosition = new Vector2(input, transform.position.y);
-        if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1)
-            lastPosition = enterPosition;
-        float deltaX = (input - lastPosition.x)*swipeSpeed;
-        // Calcola la nuova posizione della camera sull'asse X
-          newPosition = new Vector3(
-            InBounds(transform.position.x - deltaX),
+        float rawdelta = lastPosition.x - enterPosition.x;
+        //if (Mathf.Abs(rawdelta) > 2f)
+        //    return;
+
+        float deltaX = rawdelta;
+        Vector3 targetPos = new Vector3(
+            InBounds(transform.position.x + deltaX),
             transform.position.y,
-            transform.position.z);
-        // Applica la transizione graduale alla nuova posizione
-        transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
-        //si salva l'ultima per il deltaX all'inizio
-        lastPosition = enterPosition;
+            transform.position.z            
+            );
+        Debug.Log($"Lerping {lastPosition} to {targetPos}");
+        transform.position =targetPos;
+        //transform.position = Vector3.Lerp(transform.position, targetPos, moveTowardsSpeed * Time.deltaTime);
+
+        //if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1)
+        //    lastPosition = enterPosition;
+        //float deltaX = (input - lastPosition.x)*swipeSpeed;
+        //Debug.Log("Delta: " + deltaX);
+        //// Calcola la nuova posizione della camera sull'asse X
+        //  newPosition = new Vector3(
+        //    InBounds(transform.position.x - deltaX),
+        //    transform.position.y,
+        //    transform.position.z);
+        //// Applica la transizione graduale alla nuova posizione
+        //transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
+        ////si salva l'ultima per il deltaX all'inizio
+        //lastPosition = enterPosition;
     }
 
     public void DragCamera(Vector3 drag) {
