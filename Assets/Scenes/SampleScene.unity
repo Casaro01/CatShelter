@@ -609,11 +609,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50b1efc091427343830d45e8fa4e0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swipeSpeed: 1
+  swipeSpeed: 2.5
   smoothTime: 0.1
   dragSpeed: 0.2
   lastPosition: {x: 0, y: 0}
-  moveTowardsSpeed: 1.5
+  moveTowardsSpeed: 60
   cam: {fileID: 519420031}
   bkg: {fileID: 339534105}
 --- !u!1 &628835862
@@ -773,6 +773,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  backSpeed: 0.001
+  placeRadius: 1
 --- !u!1 &1163019345
 GameObject:
   m_ObjectHideFlags: 0

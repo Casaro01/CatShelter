@@ -35,22 +35,18 @@ public class CameraControl : MonoBehaviour
         if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1)
             lastPosition = enterPosition;  
 		Debug.Log("Swiping: " + input);
-        float deltaX = input - lastPosition.x;
+        float deltaX = (input - lastPosition.x)*swipeSpeed;
         Debug.Log(deltaX);
         // Calcola la nuova posizione della camera sull'asse X
-            newPosition = new Vector3(
-                InBounds((transform.position.x - deltaX)*swipeSpeed),
-                transform.position.y,
-                transform.position.z);
+          newPosition = new Vector3(
+            InBounds(transform.position.x - deltaX),
+            transform.position.y,
+            transform.position.z);
 
         // Applica la transizione graduale alla nuova posizione
-        /*transform.position = new Vector3(
-            Mathf.MoveTowards(transform.position.x, newPosition.x, moveTowardsSpeed),
-            Mathf.MoveTowards(transform.position.y, newPosition.y, moveTowardsSpeed),
-            Mathf.MoveTowards(transform.position.z, newPosition.z, moveTowardsSpeed)
-        );*/
-        transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed);
-        
+        Debug.Log(transform.position.x - newPosition.x);
+        //if ((transform.position.x - newPosition.x) > 0.1)
+        transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
         //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;
     }
