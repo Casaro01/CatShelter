@@ -28,7 +28,7 @@ public class CameraControl : MonoBehaviour
         float minX = bkgMinX + camWidht;
         return Mathf.Clamp(input, minX, maxX);
 	}
-
+    #region QUESTA E' LA VERSIONE FATTA INSIEME A MASSIMO
     /*public void SwipeCamera(float input) {
         lastPosition = transform.position;
         Vector2 enterPosition = new Vector2(input, transform.position.y);
@@ -44,30 +44,36 @@ public class CameraControl : MonoBehaviour
             );
         Debug.Log($"Lerping {lastPosition} to {targetPos}");
         transform.position =targetPos;
-        //transform.position = Vector3.Lerp(transform.position, targetPos, moveTowardsSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPos, moveTowardsSpeed * Time.deltaTime);*/
+    #endregion
+    #region QUESTO LO AVEVO FATTO IO, MA NON FUNZIONAVA COME DOVEVA (UNA VOLTA TESTATO SU TELEFONO NON FUNZIONAVA COME DA SIMULATOR)
+    //if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1) controllo nell'input per evitare che la camera dal tocco precedente al nuovo facesse uno scatto
+    //    lastPosition = enterPosition;
+    //float deltaX = (input - lastPosition.x)*swipeSpeed; variazione sull'asse x
+    //Debug.Log("Delta: " + deltaX);
+    //// Calcola la nuova posizione della camera sull'asse X
+    //  newPosition = new Vector3(
+    //    InBounds(transform.position.x - deltaX),
+    //    transform.position.y,
+    //    transform.position.z);
+    //// Applica la transizione graduale alla nuova posizione
+    //transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
+    ////si salva l'ultima per il deltaX all'inizio
+    //lastPosition = enterPosition;
+    //}
+    #endregion
 
-        //if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1)
-        //    lastPosition = enterPosition;
-        //float deltaX = (input - lastPosition.x)*swipeSpeed;
-        //Debug.Log("Delta: " + deltaX);
-        //// Calcola la nuova posizione della camera sull'asse X
-        //  newPosition = new Vector3(
-        //    InBounds(transform.position.x - deltaX),
-        //    transform.position.y,
-        //    transform.position.z);
-        //// Applica la transizione graduale alla nuova posizione
-        //transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
-        ////si salva l'ultima per il deltaX all'inizio
-        //lastPosition = enterPosition;
-    }*/
-    public void SwipeCamera(float input) {
+    #region NON MI PIACE, MAGARI DOMANI LO RIGUARDO E POI LO SVILUPPO MEGLIO
+    /*public void SwipeCamera(float input) {
         Vector3 screenCenter = new Vector3((cam.orthographicSize * cam.aspect) * 0.5f, cam.orthographicSize * 0.5f,transform.position.z);
         Vector3 screenTouch = screenCenter + new Vector3(input, screenCenter.y, transform.position.z);
         Vector3 worldCenterPosition = cam.ScreenToWorldPoint(screenCenter);
         Vector3 worldTouchPosition = cam.ScreenToWorldPoint(screenTouch);
-        Vector3 worldDeltaPosition =new Vector3(InBounds( worldTouchPosition.x - worldCenterPosition.x),worldTouchPosition.y-worldCenterPosition;
+        Vector3 worldDeltaPosition =new Vector3(InBounds( worldTouchPosition.x - worldCenterPosition.x),transform.position.y,transform.position.z) ;
         transform.position = Vector3.Lerp(transform.position,transform.position-worldDeltaPosition,moveTowardsSpeed*Time.deltaTime);
-                }
+                }*/
+    #endregion
+    //il drag funziona come deve, lo si richiama quando il gatto, in fase di dragging, viene spostato verso i lati del telefono
     public void DragCamera(Vector3 drag) {
     Vector3 viewPoint = cam.WorldToViewportPoint(drag);
     if (viewPoint.x <= 0.2) {

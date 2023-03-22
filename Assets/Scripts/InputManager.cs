@@ -97,9 +97,10 @@ public class InputManager : MonoBehaviour
 
 	void Update_SWIPE()
 	{
-		if (Input.touchCount > 0) { 
-			if(Input.touches[0].phase == TouchPhase.Moved)
-				cameraController.SwipeCamera(TouchPosition().x); 
+		if (Input.touchCount > 0) {
+			if (Input.touches[0].phase == TouchPhase.Moved) {
+				//cameraController.SwipeCamera(TouchPosition().x); 
+				}
 			//else if(Input.touches[0].phase == TouchPhase.Stationary)
 			//	ChangeState(InputState.NULL);
 			}
