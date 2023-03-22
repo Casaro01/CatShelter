@@ -29,7 +29,7 @@ public class CameraControl : MonoBehaviour
         return Mathf.Clamp(input, minX, maxX);
 	}
 
-    public void SwipeCamera(float input) {
+    /*public void SwipeCamera(float input) {
         lastPosition = transform.position;
         Vector2 enterPosition = new Vector2(input, transform.position.y);
         float rawdelta = lastPosition.x - enterPosition.x;
@@ -59,23 +59,30 @@ public class CameraControl : MonoBehaviour
         //transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
         ////si salva l'ultima per il deltaX all'inizio
         //lastPosition = enterPosition;
-    }
-
+    }*/
+    public void SwipeCamera(float input) {
+        Vector3 screenCenter = new Vector3((cam.orthographicSize * cam.aspect) * 0.5f, cam.orthographicSize * 0.5f,transform.position.z);
+        Vector3 screenTouch = screenCenter + new Vector3(input, screenCenter.y, transform.position.z);
+        Vector3 worldCenterPosition = cam.ScreenToWorldPoint(screenCenter);
+        Vector3 worldTouchPosition = cam.ScreenToWorldPoint(screenTouch);
+        Vector3 worldDeltaPosition =new Vector3(InBounds( worldTouchPosition.x - worldCenterPosition.x),worldTouchPosition.y-worldCenterPosition;
+        transform.position = Vector3.Lerp(transform.position,transform.position-worldDeltaPosition,moveTowardsSpeed*Time.deltaTime);
+                }
     public void DragCamera(Vector3 drag) {
-        Vector3 viewPoint = cam.WorldToViewportPoint(drag);
-        if (viewPoint.x <= 0.2) {
-            //drag verso sinistra
-            Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.left.x * dragSpeed), transform.position.y, transform.position.z);
-            // Applica la transizione graduale alla nuova posizione
-            transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
+    Vector3 viewPoint = cam.WorldToViewportPoint(drag);
+    if (viewPoint.x <= 0.2) {
+        //drag verso sinistra
+        Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.left.x * dragSpeed), transform.position.y, transform.position.z);
+        // Applica la transizione graduale alla nuova posizione
+        transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
 
-            } else if (viewPoint.x >= 0.8) {
-                Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.right.x * dragSpeed), transform.position.y, transform.position.z);
-                 // Applica la transizione graduale alla nuova posizione
-                 transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed * Time.deltaTime);
-            }
-    }
+        } else if (viewPoint.x >= 0.8) {
+            Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.right.x * dragSpeed), transform.position.y, transform.position.z);
+             // Applica la transizione graduale alla nuova posizione
+             transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed * Time.deltaTime);
         }
+    }
+}
 
     
     
