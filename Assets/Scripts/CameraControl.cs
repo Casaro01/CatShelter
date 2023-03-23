@@ -50,7 +50,7 @@ public class CameraControl : MonoBehaviour
     #region QUESTO LO AVEVO FATTO IO, MA NON FUNZIONAVA COME DOVEVA (UNA VOLTA TESTATO SU TELEFONO NON FUNZIONAVA COME DA SIMULATOR)
     public void SwipeCamera(float input, TouchPhase fase) {
         Vector2 enterPosition = new Vector2(input, transform.position.y);
-        if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.1) //controllo nell'input per evitare che la camera dal tocco precedente al nuovo facesse uno scatto
+        if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.5) //controllo nell'input per evitare che la camera dal tocco precedente al nuovo facesse uno scatto
         lastPosition = enterPosition;
         float deltaX = (input - lastPosition.x)*swipeSpeed; //variazione sull'asse x
         Debug.Log("Delta: " + deltaX);
@@ -62,7 +62,8 @@ public class CameraControl : MonoBehaviour
         // Applica la transizione graduale alla nuova posizione
         if (fase == TouchPhase.Ended) {
             Debug.Log("fine tocco");
-            transform.DOMoveX(InBounds(newPosition.x * 1.1f ), 0.5f, false).SetEase(Ease.OutCubic);
+            transform.DOMoveX(InBounds(transform.position.x-deltaX*0.8f), 0.5f, false);
+            //transform.DOMoveX(InBounds(newPosition.x * 1.1f ), 0.5f, false).SetEase(Ease.OutCubic);
             /*Vector3 spintaFinale = new Vector3(DOVirtual.EasedValue(lastPosition,newPosition,me));
             transform.Translate();*/
             } else if (fase == TouchPhase.Moved || fase == TouchPhase.Stationary) {

@@ -100,7 +100,8 @@ public class InputManager : MonoBehaviour
 		if (Input.touchCount > 0) {
 			Touch input= Input.GetTouch(0);
 			if (Input.touches[0].phase != TouchPhase.Canceled) {
-				cameraController.SwipeCamera(TouchPosition().x, input.phase);
+				mainCamera.GetComponent<Test>();
+				//cameraController.SwipeCamera(TouchPosition().x, input.phase);
 				//cameraController.SwipeCamera(input.position.x, input.phase);
 				}
 			//else if(Input.touches[0].phase == TouchPhase.Stationary)
