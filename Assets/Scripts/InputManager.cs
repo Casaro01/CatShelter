@@ -69,7 +69,7 @@ public class InputManager : MonoBehaviour
 			// TODO else if raycast on UI --> uiManager and changestate(UI)
 			
 			// else user is swiping camera
-			else if(Input.touches[0].phase == TouchPhase.Moved)
+			else if(Input.touches[0].phase != TouchPhase.Ended)
 			{
 				ChangeState(InputState.SWIPE);
 			}
@@ -100,6 +100,8 @@ public class InputManager : MonoBehaviour
 		if (Input.touchCount > 0) {
 			if (Input.touches[0].phase == TouchPhase.Moved) {
 				//cameraController.SwipeCamera(TouchPosition().x); 
+				cameraController.SwipeCamera(TouchPosition().x, input.phase);
+				//cameraController.SwipeCamera(input.position.x, input.phase);
 				}
 			//else if(Input.touches[0].phase == TouchPhase.Stationary)
 			//	ChangeState(InputState.NULL);
