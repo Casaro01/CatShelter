@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
 
 	//cat drag variables
 	private Cat DraggedCat;
-
+	public Vector3 startPos;
 	#endregion
 
 	#region UPDATE
@@ -55,6 +55,8 @@ public class InputManager : MonoBehaviour
 	{
 		//listen to new touches
 		if (Input.touchCount > 0) {
+			if (Input.touches[0].phase==TouchPhase.Began)
+			startPos = TouchPosition();
 			// if user's touch is on cat
 			if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
 			{
@@ -100,7 +102,7 @@ public class InputManager : MonoBehaviour
 		if (Input.touchCount > 0) {
 			if (Input.touches[0].phase != TouchPhase.Canceled) {
 				mainCamera.GetComponent<Test>();
-				cameraController.SwipeCamera(TouchPosition(), Input.touches[0].phase);
+				cameraController.SwipeCamera(TouchPosition(), Input.touches[0].phase, startPos);
 				}
 			//else if(Input.touches[0].phase == TouchPhase.Stationary)
 			//	ChangeState(InputState.NULL);
