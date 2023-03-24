@@ -6,28 +6,37 @@ public class CameraControl : MonoBehaviour
     {
     public float swipeSpeed = 0.5f; // Velocità di transizione
     public float dragSpeed = 0.2f; //velocità di drag
-    public Vector2 lastPosition; // Ultima posizione toccata
-    public float moveTowardsSpeed = 0.5f;//Frame al secondo
+    public Vector3 lastPosition; // Ultima posizione toccata
+    public float moveSpeed = 0.5f;//Frame al secondo
     [SerializeField] private Camera cam;
     [SerializeField] private SpriteRenderer bkg;
-    [SerializeField]float bkgMinX, bkgMaxX;
+    [SerializeField]float bkgMinX, bkgMaxX, bkgMaxY,bkgMinY;
     Vector3 newPosition;
+    [SerializeField] float currentSpeed;
     private void Awake()
         {
         bkgMinX=bkg.transform.position.x-bkg.bounds.size.x/2f;
+        bkgMinY=bkg.transform.position.y-bkg.bounds.size.y/2f;
         bkgMaxX=bkg.transform.position.x+bkg.bounds.size.x/2f;
+        bkgMaxY=bkg.transform.position.y+bkg.bounds.size.y/2f;
         }
     private void Start()
 	{
         lastPosition = new Vector2(transform.position.x, transform.position.y);
 	}
 
-    float InBounds(float input)
+    public Vector3 InBounds(Vector3 input)
     {
         float camWidht = cam.orthographicSize * cam.aspect;
+        float camAlt = cam.orthographicSize;
         float maxX = bkgMaxX - camWidht;
+        float maxY = bkgMaxY - camAlt;
         float minX = bkgMinX + camWidht;
-        return Mathf.Clamp(input, minX, maxX);
+        float minY = bkgMinY + camWidht;
+        return new Vector3(
+            Mathf.Clamp(input.x,minX,maxX),
+            Mathf.Clamp(input.y,minY,maxY),
+            input.z);
 	}
     #region QUESTA E' LA VERSIONE FATTA INSIEME A MASSIMO
     /*public void SwipeCamera(float input) {
@@ -48,8 +57,8 @@ public class CameraControl : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPos, moveTowardsSpeed * Time.deltaTime);*/
     #endregion
     #region QUESTO LO AVEVO FATTO IO, MA NON FUNZIONAVA COME DOVEVA (UNA VOLTA TESTATO SU TELEFONO NON FUNZIONAVA COME DA SIMULATOR)
-    public void SwipeCamera(float input, TouchPhase fase) {
-        Vector2 enterPosition = new Vector2(input, transform.position.y);
+    /*public void SwipeCamera(Vector3 input, TouchPhase fase) {
+        Vector2 enterPosition = new Vector2(input.x, transform.position.y);
         if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.5) //controllo nell'input per evitare che la camera dal tocco precedente al nuovo facesse uno scatto
         lastPosition = enterPosition;
         float deltaX = (input - lastPosition.x)*swipeSpeed; //variazione sull'asse x
@@ -58,14 +67,13 @@ public class CameraControl : MonoBehaviour
         newPosition = new Vector3(
             InBounds(transform.position.x - deltaX),
             transform.position.y,
+
             transform.position.z);
         // Applica la transizione graduale alla nuova posizione
         if (fase == TouchPhase.Ended) {
             Debug.Log("fine tocco");
             transform.DOMoveX(InBounds(transform.position.x-deltaX*0.8f), 0.5f, false);
             //transform.DOMoveX(InBounds(newPosition.x * 1.1f ), 0.5f, false).SetEase(Ease.OutCubic);
-            /*Vector3 spintaFinale = new Vector3(DOVirtual.EasedValue(lastPosition,newPosition,me));
-            transform.Translate();*/
             } else if (fase == TouchPhase.Moved || fase == TouchPhase.Stationary) {
             Debug.Log("mi sto muovendo");
             transform.DOMove(newPosition,0.5f, false);
@@ -73,9 +81,22 @@ public class CameraControl : MonoBehaviour
             }
     //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;
-    }
+    }*/
     #endregion
 
+    public void SwipeCamera(Vector3 input, TouchPhase fase) {
+        if (fase == TouchPhase.Began) {
+            currentSpeed = 0;
+            lastPosition = input;
+            } else if (fase == TouchPhase.Moved || fase == TouchPhase.Stationary) {
+            Vector3 delta = input - lastPosition;
+            transform.DOMove(InBounds(transform.position - delta), moveSpeed, false);
+            lastPosition = input;
+            currentSpeed = delta.x - moveSpeed;
+            } else if (fase == TouchPhase.Ended) {
+            transform.DOMove(InBounds(transform.position-new Vector3(currentSpeed,transform.position.y,transform.position.z)),0.666f, false).SetEase(Ease.OutQuad);
+            }
+        }
     #region NON MI PIACE, MAGARI DOMANI LO RIGUARDO E POI LO SVILUPPO MEGLIO
     /*public void SwipeCamera(float input) {
         Vector3 screenCenter = new Vector3((cam.orthographicSize * cam.aspect) * 0.5f, cam.orthographicSize * 0.5f,transform.position.z);
@@ -91,14 +112,14 @@ public class CameraControl : MonoBehaviour
     Vector3 viewPoint = cam.WorldToViewportPoint(drag);
     if (viewPoint.x <= 0.2) {
         //drag verso sinistra
-        Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.left.x * dragSpeed), transform.position.y, transform.position.z);
+        Vector3 newPosition =InBounds(transform.position+Vector3.left);
         // Applica la transizione graduale alla nuova posizione
-        transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
 
         } else if (viewPoint.x >= 0.8) {
-            Vector3 newPosition = new Vector3(InBounds(transform.position.x + Vector3.right.x * dragSpeed), transform.position.y, transform.position.z);
+            Vector3 newPosition =InBounds(transform.position + Vector3.right);
              // Applica la transizione graduale alla nuova posizione
-             transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed * Time.deltaTime);
+             transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed * Time.deltaTime);
         }
     }
 }
