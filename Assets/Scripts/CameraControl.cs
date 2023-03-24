@@ -65,10 +65,8 @@ public class CameraControl : MonoBehaviour
         Vector3 delta = (input - lastPosition)*swipeSpeed; //variazione sull'asse x
         Debug.Log("Delta: " + delta);
         // Calcola la nuova posizione della camera sull'asse X
-        newPosition = /*new Vector3(*/
-            InBounds(transform.position - delta);/*,
-            transform.position.y,
-            transform.position.z);*/
+        newPosition =
+            InBounds(transform.position - delta);
         // Applica la transizione graduale alla nuova posizione
         if (fase == TouchPhase.Ended) {
             Debug.Log("fine tocco");
@@ -77,17 +75,12 @@ public class CameraControl : MonoBehaviour
                 } else if (Mathf.Sign(startPos.x - newPosition.x) < 0) {
                 transform.DOMove(InBounds(transform.position + Vector3.left * 0.5f), 0.5f, false);
                 }
-            //transform.DOMove(InBounds(transform.position+newPosition), 0.5f, false);
-            //transform.DOMove(InBounds(newPosition*1.5f), 0.5f, false);
             newPosition = new Vector3();
             lastPosition = new Vector3();
             delta = new Vector3();
-            //transform.DOMove(InBounds(transform.position-delta*0.8f), 0.5f, false);
-            //transform.DOMoveX(InBounds(newPosition.x * 1.1f ), 0.5f, false).SetEase(Ease.OutCubic);
             } else if (fase == TouchPhase.Moved || fase == TouchPhase.Stationary) {
             Debug.Log("mi sto muovendo");
             transform.DOMove(newPosition,0.5f, false);
-            //transform.position = Vector3.Lerp(transform.position, newPosition, moveTowardsSpeed*Time.deltaTime);
             }
     //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;
