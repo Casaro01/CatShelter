@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Windows;
 
 public class CameraControl : MonoBehaviour
     {
@@ -32,11 +33,11 @@ public class CameraControl : MonoBehaviour
         float maxX = bkgMaxX - camWidht;
         float maxY = bkgMaxY - camAlt;
         float minX = bkgMinX + camWidht;
-        float minY = bkgMinY + camWidht;
+        float minY = bkgMinY + camAlt;
         return new Vector3(
             Mathf.Clamp(input.x,minX,maxX),
             Mathf.Clamp(input.y,minY,maxY),
-            input.z);
+            Mathf.Clamp(input.z,transform.position.z,transform.position.z));
 	}
     #region QUESTA E' LA VERSIONE FATTA INSIEME A MASSIMO
     /*public void SwipeCamera(float input) {
@@ -57,22 +58,22 @@ public class CameraControl : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPos, moveTowardsSpeed * Time.deltaTime);*/
     #endregion
     #region QUESTO LO AVEVO FATTO IO, MA NON FUNZIONAVA COME DOVEVA (UNA VOLTA TESTATO SU TELEFONO NON FUNZIONAVA COME DA SIMULATOR)
-    /*public void SwipeCamera(Vector3 input, TouchPhase fase) {
-        Vector2 enterPosition = new Vector2(input.x, transform.position.y);
+    public void SwipeCamera(Vector3 input, TouchPhase fase) {
+        Vector2 enterPosition = new Vector2(input.x, input.y);
         if (Mathf.Abs(enterPosition.x - lastPosition.x) > 0.5) //controllo nell'input per evitare che la camera dal tocco precedente al nuovo facesse uno scatto
         lastPosition = enterPosition;
-        float deltaX = (input - lastPosition.x)*swipeSpeed; //variazione sull'asse x
-        Debug.Log("Delta: " + deltaX);
+        Vector3 delta = (input - lastPosition)*swipeSpeed; //variazione sull'asse x
+        Debug.Log("Delta: " + delta);
         // Calcola la nuova posizione della camera sull'asse X
-        newPosition = new Vector3(
-            InBounds(transform.position.x - deltaX),
+        newPosition = /*new Vector3(*/
+            InBounds(transform.position - delta);/*,
             transform.position.y,
-
-            transform.position.z);
+            transform.position.z);*/
         // Applica la transizione graduale alla nuova posizione
         if (fase == TouchPhase.Ended) {
             Debug.Log("fine tocco");
-            transform.DOMoveX(InBounds(transform.position.x-deltaX*0.8f), 0.5f, false);
+            transform.DOMove(InBounds(newPosition*1.5f), 0.5f, false);
+            //transform.DOMove(InBounds(transform.position-delta*0.8f), 0.5f, false);
             //transform.DOMoveX(InBounds(newPosition.x * 1.1f ), 0.5f, false).SetEase(Ease.OutCubic);
             } else if (fase == TouchPhase.Moved || fase == TouchPhase.Stationary) {
             Debug.Log("mi sto muovendo");
@@ -81,22 +82,31 @@ public class CameraControl : MonoBehaviour
             }
     //si salva l'ultima per il deltaX all'inizio
         lastPosition = enterPosition;
-    }*/
+    }
     #endregion
 
-    public void SwipeCamera(Vector3 input, TouchPhase fase) {
+    /*public void SwipeCamera(Vector3 input, TouchPhase fase) {
         if (fase == TouchPhase.Began) {
             currentSpeed = 0;
-            lastPosition = input;
+            if (Mathf.Abs(lastPosition.x - input.x) <1f)
+                lastPosition = input;
+            else if (Mathf.Abs(lastPosition.x - input.x) < 0.1f)
+                return;
             } else if (fase == TouchPhase.Moved || fase == TouchPhase.Stationary) {
-            Vector3 delta = input - lastPosition;
+            currentSpeed = 0;
+            if (Mathf.Abs(lastPosition.x - input.x) < 1f)
+                lastPosition = input;
+            else if (Mathf.Abs(lastPosition.x - input.x) < 0.1f)
+                return;
+            Debug.Log(Mathf.Abs(lastPosition.x - input.x));
+            Vector3 delta = (input - lastPosition)*swipeSpeed;
             transform.DOMove(InBounds(transform.position - delta), moveSpeed, false);
-            lastPosition = input;
-            currentSpeed = delta.x - moveSpeed;
+            lastPosition = transform.position;
+            currentSpeed = delta.x * moveSpeed;
             } else if (fase == TouchPhase.Ended) {
-            transform.DOMove(InBounds(transform.position-new Vector3(currentSpeed,transform.position.y,transform.position.z)),0.666f, false).SetEase(Ease.OutQuad);
+            transform.DOMove(InBounds(transform.position-new Vector3(currentSpeed,0f,0f)),0.666f, false);
             }
-        }
+        }*/
     #region NON MI PIACE, MAGARI DOMANI LO RIGUARDO E POI LO SVILUPPO MEGLIO
     /*public void SwipeCamera(float input) {
         Vector3 screenCenter = new Vector3((cam.orthographicSize * cam.aspect) * 0.5f, cam.orthographicSize * 0.5f,transform.position.z);
@@ -112,14 +122,14 @@ public class CameraControl : MonoBehaviour
     Vector3 viewPoint = cam.WorldToViewportPoint(drag);
     if (viewPoint.x <= 0.2) {
         //drag verso sinistra
-        Vector3 newPosition =InBounds(transform.position+Vector3.left);
+        Vector3 newPosition =InBounds(transform.position+Vector3.left*dragSpeed);
         // Applica la transizione graduale alla nuova posizione
         transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
 
         } else if (viewPoint.x >= 0.8) {
-            Vector3 newPosition =InBounds(transform.position + Vector3.right);
+            Vector3 newPosition =InBounds(transform.position+Vector3.right*dragSpeed);
              // Applica la transizione graduale alla nuova posizione
-             transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed * Time.deltaTime);
+             transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
         }
     }
 }
