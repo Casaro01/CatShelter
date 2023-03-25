@@ -65,8 +65,7 @@ public class CameraControl : MonoBehaviour
         Vector3 delta = (input - lastPosition)*swipeSpeed; //variazione sull'asse x
         Debug.Log("Delta: " + delta);
         // Calcola la nuova posizione della camera sull'asse X
-        newPosition =
-            InBounds(transform.position - delta);
+        newPosition =InBounds(transform.position - delta);
         // Applica la transizione graduale alla nuova posizione
         if (fase == TouchPhase.Ended) {
             Debug.Log("fine tocco");
