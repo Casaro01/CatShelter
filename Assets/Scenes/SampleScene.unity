@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swipeSpeed: 7.5
-  dragSpeed: 5
+  dragSpeed: 0.75
   lastPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 0.666
   cam: {fileID: 519420031}
@@ -909,6 +909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   mainCamera: {fileID: 519420031}
+  startPos: {x: 0, y: 0, z: 0}
 --- !u!1 &630923186
 GameObject:
   m_ObjectHideFlags: 0

@@ -124,14 +124,16 @@ public class CameraControl : MonoBehaviour
     Vector3 viewPoint = cam.WorldToViewportPoint(drag);
     if (viewPoint.x <= 0.2) {
         //drag verso sinistra
-        Vector3 newPosition =InBounds(transform.position+Vector3.left*dragSpeed);
+        //Vector3 newPosition =InBounds(transform.position+Vector3.left);
         // Applica la transizione graduale alla nuova posizione
-        transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
+        transform.DOMove(InBounds(transform.position + Vector3.left * dragSpeed), moveSpeed, false);
+        //transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
 
         } else if (viewPoint.x >= 0.8) {
-            Vector3 newPosition =InBounds(transform.position+Vector3.right*dragSpeed);
-             // Applica la transizione graduale alla nuova posizione
-             transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
+            //Vector3 newPosition =InBounds(transform.position+Vector3.right);
+            // Applica la transizione graduale alla nuova posizione
+            transform.DOMove(InBounds(transform.position + Vector3.right * dragSpeed), moveSpeed, false);
+            //transform.position = Vector3.Lerp(transform.position, newPosition, moveSpeed*Time.deltaTime);
         }
     }
 }
