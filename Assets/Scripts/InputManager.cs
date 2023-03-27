@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
 	private CameraControl cameraController;//swipeController;
 	public static float cameraZDistance = 0;
 	private RaycastHit hit;
+	private float startTime;
 
 	//cat drag variables
 	private Cat DraggedCat;
@@ -55,27 +56,30 @@ public class InputManager : MonoBehaviour
 	{
 		//listen to new touches
 		if (Input.touchCount > 0) {
-			if (Input.touches[0].phase==TouchPhase.Began)
-			startPos = TouchPosition();
+			if (Input.GetTouch(0).phase == TouchPhase.Began)
+				startPos = TouchPosition();
 			// if user's touch is on cat
-			if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6))
-			{
+			if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6)) {
 				// save pointer to cat instance in variable
 				DraggedCat = hit.collider.GetComponent<Cat>().OnDragStart();
 
 				// if cat validated the OnDragStart, then go to drag; else display message
-				if (DraggedCat != null) { ChangeState(InputState.DRAG); }
-				else { Debug.Log("Gatto non disponibile!"); }
-			}
+				if (DraggedCat != null) {
+					ChangeState(InputState.DRAG);
+					} else {
+					Debug.Log("Gatto non disponibile!");
+					}
+				}
 
 			// TODO else if raycast on UI --> uiManager and changestate(UI)
-			
+
 			// else user is swiping camera
-			else if(Input.touches[0].phase != TouchPhase.Ended)
-			{
+			//if (Input.GetTouch(0).phase != TouchPhase.Ended)
+			else {
+				startTime = Time.time;
 				ChangeState(InputState.SWIPE);
+				}
 			}
-		}
 	}
 
 	void Update_DRAG()
@@ -100,15 +104,18 @@ public class InputManager : MonoBehaviour
 	void Update_SWIPE()
 	{
 		if (Input.touchCount > 0) {
-			if (Input.touches[0].phase != TouchPhase.Canceled) {
-				mainCamera.GetComponent<Test>();
-				cameraController.SwipeCamera(TouchPosition(), Input.touches[0].phase, startPos);
+			if (Input.GetTouch(0).phase != TouchPhase.Ended) {
+				//mainCamera.GetComponent<Test>();
+				cameraController.SwipeCamera(TouchPosition(), Input.GetTouch(0).phase, startPos, startTime);
 				}
 			//else if(Input.touches[0].phase == TouchPhase.Stationary)
 			//	ChangeState(InputState.NULL);
 			}
 		//if (Input.touchCount > 0) { cameraController.SwipeCamera(TouchPositionScreenSpace().x); }
-		else { ChangeState(InputState.NULL); }
+		else {
+			cameraController.firstTouch = true;
+			ChangeState(InputState.NULL);
+			}
 	}
 
 	void Update_UI()
@@ -131,18 +138,6 @@ public class InputManager : MonoBehaviour
 			case InputState.NULL:
 				SetState_NULL();
 				break;
-
-			case InputState.DRAG:
-				SetState_DRAG();
-				break;
-
-			case InputState.SWIPE:
-				SetState_SWIPE();
-				break;
-
-			case InputState.UI:
-				SetState_UI();
-				break;
 		}
 	}
 
@@ -151,20 +146,6 @@ public class InputManager : MonoBehaviour
 		DraggedCat = null;
 	}
 
-	void SetState_DRAG()
-	{
-		
-	}
-
-	void SetState_SWIPE()
-	{
-		
-	}
-
-	void SetState_UI()
-	{
-
-	}
 
 	#endregion
 
