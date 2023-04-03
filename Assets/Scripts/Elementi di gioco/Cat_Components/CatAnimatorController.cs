@@ -6,7 +6,8 @@ public class CatAnimatorController : MonoBehaviour
 {
     [SerializeField] Animator myAnimController;
     private AnimCatState catActState;
-    [SerializeField] enum AnimCatState {
+
+    public enum AnimCatState {
         IDLE,
         REST,
         DRAG,
@@ -16,7 +17,10 @@ public class CatAnimatorController : MonoBehaviour
     private void Update() {
         
         }
-    public void ChangeAnim(string anim) {
-        myAnimController.Play("");
+    public void ChangeAnim(AnimCatState newState) {
+        if (newState == catActState)
+            return;
+        myAnimController.Play(newState.ToString());
+        catActState= newState;
         }
     }
