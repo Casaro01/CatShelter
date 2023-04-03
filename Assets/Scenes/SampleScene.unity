@@ -908,6 +908,8 @@ GameObject:
   - component: {fileID: 630923190}
   - component: {fileID: 630923189}
   - component: {fileID: 630923192}
+  - component: {fileID: 630923194}
+  - component: {fileID: 630923193}
   m_Layer: 6
   m_Name: Cat
   m_TagString: Untagged
@@ -1009,6 +1011,34 @@ MonoBehaviour:
   state: 0
   backSpeed: 0.01
   placeRadius: 0.5
+--- !u!114 &630923193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630923186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54590df22697f1744a1a8d595bac1ece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAnimController: {fileID: 0}
+  catActState: 0
+--- !u!114 &630923194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630923186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54590df22697f1744a1a8d595bac1ece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAnimController: {fileID: 0}
+  catActState: 0
 --- !u!1 &821359932
 GameObject:
   m_ObjectHideFlags: 0
