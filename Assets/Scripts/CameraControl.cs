@@ -37,7 +37,8 @@ public class CameraControl : MonoBehaviour
         float minY = bkgMinY + camAlt;
         return new Vector3(
             Mathf.Clamp(input.x,minX,maxX),
-            Mathf.Clamp(input.y,minY,maxY),
+            //Mathf.Clamp(input.y,minY,maxY),
+            0,
             transform.position.z);
 	}
     public void SwipeCamera(Vector3 input, TouchPhase fase, Vector3 startPos, float inizio) {
@@ -67,7 +68,7 @@ public class CameraControl : MonoBehaviour
             newPosition = new Vector3();
             lastPosition = new Vector3();
             delta = new Vector3();
-            } else if (fase == TouchPhase.Moved) {
+            } else if (fase == TouchPhase.Moved||fase==TouchPhase.Stationary) {
             Debug.Log("mi sto muovendo");
             transform.DOMove(newPosition, 0.5f, false);            }
         //si salva l'ultima per il deltaX all'inizio
@@ -76,17 +77,20 @@ public class CameraControl : MonoBehaviour
 
     public void DragCamera(Vector3 drag) {
     Vector3 viewPoint = cam.WorldToViewportPoint(drag);
-    if (viewPoint.x <= 0.2) {
+        if (viewPoint.x <= 0.2) {
             //drag verso sinistra
             // Applica la transizione graduale alla nuova posizione
             Vector3 temp = InBounds(transform.position + Vector3.left * dragSpeed);
-        transform.DOMove(temp, moveSpeed, false);
+            transform.DOMove(temp, moveSpeed, false);
 
-        } else if (viewPoint.x >= 0.8) {
+            } else if (viewPoint.x >= 0.8) {
             //Vector3 newPosition =InBounds(transform.position+Vector3.right);
             // Applica la transizione graduale alla nuova posizione
             Vector3 temp = InBounds(transform.position + Vector3.right * dragSpeed);
             transform.DOMove(temp, moveSpeed, false);
-        }
+            } else {
+            transform.position = transform.position;
+            return;
+            }
     }
 }
