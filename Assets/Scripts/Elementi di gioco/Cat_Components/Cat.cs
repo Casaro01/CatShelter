@@ -14,6 +14,18 @@ public class Cat : MonoBehaviour
 	public CatState state = CatState.IDLE;
 	CatState prevState;
 
+	[SerializeField] Animator myAnimController;
+	private AnimCatState catActState;
+
+	public enum AnimCatState
+	{
+		IDLE,
+		REST,
+		DRAG,
+		WORK,
+		BACKTOBED,
+	};
+
 	private Bed myBed = null;
 	private Item myToy = null;
 
@@ -114,22 +126,27 @@ public class Cat : MonoBehaviour
 		switch (state)
 		{
 			case CatState.IDLE:
+				myAnimController.Play(newState.ToString());
 				SetState_IDLE();
 				break;
 
 			case CatState.REST:
+				myAnimController.Play(newState.ToString());
 				SetState_REST();
 				break;
 
 			case CatState.DRAG:
+				myAnimController.Play(newState.ToString());
 				SetState_DRAG();
 				break;
 
 			case CatState.WORK:
+				myAnimController.Play(newState.ToString());
 				SetState_WORK();
 				break;
 
 			case CatState.BACKTOBED:
+				myAnimController.Play(newState.ToString());
 				SetState_BACKTOBED();
 				break;
 		}
