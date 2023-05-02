@@ -5,5 +5,7 @@ using UnityEngine.UIElements;
 
 public class Item : MonoBehaviour
 {
+	public string itemName;
+
 	public Cat myCat;
 }

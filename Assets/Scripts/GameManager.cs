@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // cat list
-
-    // object inventory
+    // inventory and cat list
+    public List<Item> playerItemInventory = new List<Item>();
+    public List<Cat> playerCatList = new List<Cat>();
 
     // player money
+    public int playerMoney;
 
     void Start()
     {
@@ -24,8 +25,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // keep tabs on inventory, player money, cat list
-        
-
+        // player inventory, active cat list and playermoney are managed step by step by every script that can modify them
     }
 }

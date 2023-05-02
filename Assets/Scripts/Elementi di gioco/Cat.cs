@@ -67,7 +67,7 @@ public class Cat : MonoBehaviour
 
 	void Update_IDLE()
 	{
-		// do nothing, no animation
+		// do nothing
 			
 		// exit state if gets a bed assigned or is dragged
 		if (myBed != null)
@@ -86,15 +86,11 @@ public class Cat : MonoBehaviour
 
 	void Update_DRAG()
 	{
-		// dragged animation
-
 		// exits state when OnDragEnd() is called from InputManager
 	}
 
 	void Update_WORK()
 	{
-		// play animation
-
 		// stays on item for x time
 		// if still on item when time runs out give money
 		// work can be cancelled but UI prompt pops up kinda like in clash of clans
@@ -104,7 +100,7 @@ public class Cat : MonoBehaviour
 
 	void Update_BACKTOBED()
 	{
-		// this shouldn't happen, but if cat has no bed, go idle instead
+		// this shouldn't happen, but if cat has no bed and still reached this state, go idle instead
 		if (myBed == null) { ChangeState(CatState.IDLE); return; }
 		// if close enough to bed, go to REST
 		if (distToBed <= 0.3) { ChangeState(CatState.REST); }
@@ -123,30 +119,28 @@ public class Cat : MonoBehaviour
 		prevState = state;
 		state = newState;
 
+		myAnimController.Play(newState.ToString());
+
 		switch (state)
 		{
 			case CatState.IDLE:
-				myAnimController.Play(newState.ToString());
+				
 				SetState_IDLE();
 				break;
 
 			case CatState.REST:
-				myAnimController.Play(newState.ToString());
 				SetState_REST();
 				break;
 
 			case CatState.DRAG:
-				myAnimController.Play(newState.ToString());
 				SetState_DRAG();
 				break;
 
 			case CatState.WORK:
-				myAnimController.Play(newState.ToString());
 				SetState_WORK();
 				break;
 
 			case CatState.BACKTOBED:
-				myAnimController.Play(newState.ToString());
 				SetState_BACKTOBED();
 				break;
 		}
@@ -253,6 +247,7 @@ public class Cat : MonoBehaviour
 	void CoupleTo(Item newItem)
 	{
 		newItem.myCat = this;
+		PlayerPrefs.SetString("CatRed_inItem", newItem.itemName);
 
 		if (newItem.GetType() == typeof(Bed))
 		{
