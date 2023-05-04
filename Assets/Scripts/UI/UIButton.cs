@@ -13,5 +13,4 @@ public class UIButton : MonoBehaviour
 
         sonPanel.SetActive(true);
         }
-    onC
 }
