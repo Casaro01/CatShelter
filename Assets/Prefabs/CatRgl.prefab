@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2679223262083846244, guid: dcb601cb85e9ac4419781682880ce3ea, type: 3}
       propertyPath: m_Name
-      value: Cat
+      value: CatRgl
       objectReference: {fileID: 0}
     - target: {fileID: 2679223262083846245, guid: dcb601cb85e9ac4419781682880ce3ea, type: 3}
       propertyPath: m_RootOrder
@@ -55,5 +55,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2679223262083846252, guid: dcb601cb85e9ac4419781682880ce3ea, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9cb450443cd515e42bdc51b52841db6f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcb601cb85e9ac4419781682880ce3ea, type: 3}
