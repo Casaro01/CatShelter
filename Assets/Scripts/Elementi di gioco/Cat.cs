@@ -35,6 +35,7 @@ public class Cat : MonoBehaviour
 	public float placeRadius = 0.5f;
 	private RaycastHit hit;
 
+	[SerializeField]CatAnimatorController myAnimController;
 	#endregion
 
 	#region UPDATE
@@ -149,6 +150,7 @@ public class Cat : MonoBehaviour
 	void SetState_IDLE()
 	{
 		//nothing
+		myAnimController.ChangeAnim(CatAnimatorController.AnimCatState.IDLE);
 	}
 
 	void SetState_REST()
@@ -160,6 +162,7 @@ public class Cat : MonoBehaviour
 	void SetState_DRAG()
 	{
 		// dragging animation start
+		myAnimController.ChangeAnim(CatAnimatorController.AnimCatState.DRAG);
 	}
 
 	void SetState_WORK()
