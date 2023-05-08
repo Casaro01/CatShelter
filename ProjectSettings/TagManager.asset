@@ -44,3 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Cats
+    uniqueID: 2009088659
+    locked: 0
+  - name: Item
+    uniqueID: 2934556249
+    locked: 0
