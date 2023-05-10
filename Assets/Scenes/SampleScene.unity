@@ -9850,6 +9850,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1163019346}
     m_Modifications:
+    - target: {fileID: 8562352196407769313, guid: 95e887277dc22734fbd85ef3d4f72f88, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: efbfd44b3945c9148b8646e1ef73962c, type: 2}
     - target: {fileID: 8562352196407769320, guid: 95e887277dc22734fbd85ef3d4f72f88, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -16041,6 +16045,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1163019346}
     m_Modifications:
+    - target: {fileID: 5336328941271121569, guid: e07ba9c2ed0bfd64f9291f826856d325, type: 3}
+      propertyPath: m_Size.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336328941271121569, guid: e07ba9c2ed0bfd64f9291f826856d325, type: 3}
+      propertyPath: m_Size.y
+      value: 2.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336328941271121569, guid: e07ba9c2ed0bfd64f9291f826856d325, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5336328941271121578, guid: e07ba9c2ed0bfd64f9291f826856d325, type: 3}
       propertyPath: m_Name
       value: CatRbw
