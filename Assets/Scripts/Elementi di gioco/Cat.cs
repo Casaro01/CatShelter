@@ -10,6 +10,7 @@ public class Cat : MonoBehaviour
 
 	// todo int rarity (new object? cat subclass?) : decides how rare the cat is to find and how much energy it gets
 	// todo int energy (int with complex management, to do after rarity) : can grow with time, how much and how often depends on rarity; static modifier to how much time an action takes
+	public string catName;
 	public enum CatState { IDLE, REST, DRAG, WORK, BACKTOBED };
 	public CatState state = CatState.IDLE;
 	CatState prevState;
@@ -246,15 +247,16 @@ public class Cat : MonoBehaviour
 	void CoupleTo(Item newItem)
 	{
 		newItem.myCat = this;
-		PlayerPrefs.SetString("CatRed_inItem", newItem.itemName);
 
 		if (newItem.GetType() == typeof(Bed))
 		{
 			myBed = (Bed)newItem;
+			PlayerPrefs.SetString("Cat" + catName + "_Bed", newItem.itemName);
 		}
 		else
 		{
 			myToy = (Toy)newItem;
+			PlayerPrefs.SetString("Cat" + catName + "_Toy", newItem.itemName);
 		}
 	}
 	#endregion

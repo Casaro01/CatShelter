@@ -8,4 +8,5 @@ public class Item : MonoBehaviour
 	public string itemName;
 
 	public Cat myCat;
+	public Slot mySlot;
 }

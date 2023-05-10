@@ -1825,6 +1825,7 @@ MonoBehaviour:
   itemName: 
   myCat: {fileID: 0}
   objectiveTime: 0
+  startTime: 0
   currentTime: 0
   reward: 0
   state: 0
@@ -7129,6 +7130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1163019346}
     m_Modifications:
+    - target: {fileID: 5777061118935899424, guid: 9575be7243ebe8c4c9b9d477ccae67f0, type: 3}
+      propertyPath: catName
+      value: Red
+      objectReference: {fileID: 0}
     - target: {fileID: 5777061118935899434, guid: 9575be7243ebe8c4c9b9d477ccae67f0, type: 3}
       propertyPath: m_Name
       value: CatRed
@@ -9017,6 +9022,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1163019346}
     m_Modifications:
+    - target: {fileID: 7967759851145654420, guid: 7b6be0387a7180343a96704712786392, type: 3}
+      propertyPath: catName
+      value: Blu
+      objectReference: {fileID: 0}
     - target: {fileID: 7967759851145654421, guid: 7b6be0387a7180343a96704712786392, type: 3}
       propertyPath: m_Size.y
       value: 1.6
@@ -9854,6 +9863,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: efbfd44b3945c9148b8646e1ef73962c, type: 2}
+    - target: {fileID: 8562352196407769315, guid: 95e887277dc22734fbd85ef3d4f72f88, type: 3}
+      propertyPath: catName
+      value: Fat
+      objectReference: {fileID: 0}
     - target: {fileID: 8562352196407769320, guid: 95e887277dc22734fbd85ef3d4f72f88, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -15482,6 +15495,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7714408274113015228, guid: 8ddd446ec16ae3d46894d67fdf6514d4, type: 3}
+      propertyPath: catName
+      value: Rgl
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ddd446ec16ae3d46894d67fdf6514d4, type: 3}
 --- !u!1 &1960452467
@@ -16045,6 +16062,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1163019346}
     m_Modifications:
+    - target: {fileID: 5336328941271121568, guid: e07ba9c2ed0bfd64f9291f826856d325, type: 3}
+      propertyPath: catName
+      value: Rbw
+      objectReference: {fileID: 0}
     - target: {fileID: 5336328941271121569, guid: e07ba9c2ed0bfd64f9291f826856d325, type: 3}
       propertyPath: m_Size.x
       value: 3

@@ -8,13 +8,14 @@ public class Toy : Item
 	#region VARS
 
 	public float objectiveTime;
+	public float startTime;
 	public float currentTime;
 	public float reward;
 
 	public enum ToyState { IDLE, INUSE, END };
 	public ToyState state = ToyState.IDLE;
 	ToyState prevState;
-
+		
 # endregion
 
 	#region UPDATE
