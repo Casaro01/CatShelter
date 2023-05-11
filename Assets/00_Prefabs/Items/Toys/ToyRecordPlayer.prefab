@@ -7,6 +7,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 251502422227591560, guid: 87941991e4f4db44582befdf4757182e, type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: f4b3afea9eaf1d84799280981e4d933f, type: 2}
+    - target: {fileID: 251502422227591560, guid: 87941991e4f4db44582befdf4757182e, type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 251502422227591560, guid: 87941991e4f4db44582befdf4757182e, type: 3}
+      propertyPath: m_Animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400000, guid: f4b3afea9eaf1d84799280981e4d933f, type: 2}
     - target: {fileID: 5143377044009855097, guid: 87941991e4f4db44582befdf4757182e, type: 3}
       propertyPath: m_Name
       value: ToyRecordPlayer

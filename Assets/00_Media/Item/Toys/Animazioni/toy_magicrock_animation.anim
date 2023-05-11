@@ -8,7 +8,7 @@ AnimationClip:
   m_PrefabAsset: {fileID: 0}
   m_Name: toy_magicrock_animation
   serializedVersion: 6
-  m_Legacy: 0
+  m_Legacy: 1
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -39,20 +39,8 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings:
-    - serializedVersion: 2
-      path: 0
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-    pptrCurveMapping:
-    - {fileID: 21300000, guid: 4d35187a68087bd4599e90972d502c9c, type: 3}
-    - {fileID: 21300000, guid: 0c8175a86023b9f48bd1792b7367ab59, type: 3}
-    - {fileID: 21300000, guid: 649b0e0af98769d4ab7f0bb53e0de719, type: 3}
-    - {fileID: 21300000, guid: 2b2096d3c901d2949b8b72aad576ad22, type: 3}
-    - {fileID: 21300000, guid: 447ade2342cc7c9469d8338e1f450141, type: 3}
+    genericBindings: []
+    pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

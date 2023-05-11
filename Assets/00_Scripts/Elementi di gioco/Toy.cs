@@ -16,17 +16,8 @@ public class Toy : Item
 	public ToyState state = ToyState.IDLE;
 	ToyState prevState;
 
-	[SerializeField] Animator myAnimController;
-	private AnimToyState toyActState;
-
+	public Animation myAnimation;
 	public SpriteRenderer myRenderer;
-
-	public enum AnimToyState
-	{
-		IDLE,
-		INUSE,
-		END
-	};
 
 	#endregion
 
@@ -51,7 +42,9 @@ public class Toy : Item
 
 	private void Update_IDLE()
 	{
-		// idle animation
+		// disattiva animation, attiva sprite renderer
+		myAnimation.enabled = false;
+		myRenderer.enabled = true;
 
 		// wait for cat to be assigned
 
@@ -59,7 +52,9 @@ public class Toy : Item
 	}
 	private void Update_USED()
 	{
-		// used animation
+		// attiva animator, disattiva sprite renderer
+		myAnimation.enabled = true;
+		myRenderer.enabled = false;
 
 		// count down timer
 
@@ -68,7 +63,10 @@ public class Toy : Item
 	}
 	private void Update_END()
 	{
-		// wait to be collected, but cat is already sent home
+		// disattiva animator, attiva sprite renderer
+		myAnimation.enabled = false;
+		myRenderer.enabled = true;
+
 	}
 
 	#endregion
@@ -99,12 +97,12 @@ public class Toy : Item
 	}
 	private void SetState_IDLE()
 	{
-
+		if (myCat)	{ ChangeState(ToyState.INUSE);	}
 	}
 
 	private void SetState_USED()
 	{
-		
+		if (!myCat) { ChangeState(ToyState.IDLE); }
 	}
 
 	private void SetState_END()
