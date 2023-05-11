@@ -58,6 +58,9 @@ public class InputManager : MonoBehaviour
 		if (Input.touchCount > 0) {
 			if (Input.GetTouch(0).phase == TouchPhase.Began)
 				startPos = TouchPosition();
+
+
+
 			// if user's touch is on cat
 			if (Physics.Raycast(TouchPosition(), Vector3.forward, out hit, 100, 1 << 6)) {
 				// save pointer to cat instance in variable
@@ -70,8 +73,6 @@ public class InputManager : MonoBehaviour
 					Debug.Log("Gatto non disponibile!");
 					}
 				}
-
-			// TODO else if raycast on UI --> uiManager and changestate(UI)
 
 			// else user is swiping camera
 			//if (Input.GetTouch(0).phase != TouchPhase.Ended)

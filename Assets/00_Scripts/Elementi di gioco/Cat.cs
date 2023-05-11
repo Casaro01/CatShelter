@@ -179,7 +179,7 @@ public class Cat : MonoBehaviour
 	public Cat OnDragStart()
 	{
 		//immune to drag if in BACKTOBED or WORKx	
-		if (state == CatState.BACKTOBED || state == CatState.WORK) { return null; }
+		if (state == CatState.BACKTOBED) { return null; }
 
 		ChangeState(CatState.DRAG);
 		return this;

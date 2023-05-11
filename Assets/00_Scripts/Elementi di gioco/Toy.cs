@@ -42,9 +42,7 @@ public class Toy : Item
 
 	private void Update_IDLE()
 	{
-		// disattiva animation, attiva sprite renderer
-		myAnimation.enabled = false;
-		myRenderer.enabled = true;
+		if (myCat) { ChangeState(ToyState.INUSE); }
 
 		// wait for cat to be assigned
 
@@ -52,9 +50,7 @@ public class Toy : Item
 	}
 	private void Update_USED()
 	{
-		// attiva animator, disattiva sprite renderer
-		myAnimation.enabled = true;
-		myRenderer.enabled = false;
+		if (!myCat) { ChangeState(ToyState.IDLE); }
 
 		// count down timer
 
@@ -63,9 +59,7 @@ public class Toy : Item
 	}
 	private void Update_END()
 	{
-		// disattiva animator, attiva sprite renderer
-		myAnimation.enabled = false;
-		myRenderer.enabled = true;
+		
 
 	}
 
@@ -97,17 +91,24 @@ public class Toy : Item
 	}
 	private void SetState_IDLE()
 	{
-		if (myCat)	{ ChangeState(ToyState.INUSE);	}
+		myAnimation.enabled = false;
+		myRenderer.enabled = true;
+		
 	}
 
 	private void SetState_USED()
 	{
-		if (!myCat) { ChangeState(ToyState.IDLE); }
+		// attiva animator, disattiva sprite renderer
+		myAnimation.enabled = true;
+		myRenderer.enabled = false;
+		
 	}
 
 	private void SetState_END()
 	{
-
+		// disattiva animator, attiva sprite renderer
+		myAnimation.enabled = false;
+		myRenderer.enabled = true;
 	}
 	#endregion
 }
