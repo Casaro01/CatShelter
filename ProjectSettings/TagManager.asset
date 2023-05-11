@@ -16,15 +16,15 @@ TagManager:
   - UI
   - Cat
   - Item
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - Slot
   - Background
-  - Camera
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -44,9 +44,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Cats
-    uniqueID: 2009088659
+  - name: Background
+    uniqueID: 771088841
+    locked: 0
+  - name: Slot
+    uniqueID: 1110256113
     locked: 0
   - name: Item
     uniqueID: 2934556249
+    locked: 0
+  - name: Cats
+    uniqueID: 2009088659
     locked: 0
