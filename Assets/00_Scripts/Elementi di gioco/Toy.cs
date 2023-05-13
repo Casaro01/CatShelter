@@ -91,24 +91,24 @@ public class Toy : Item
 	}
 	private void SetState_IDLE()
 	{
-		myAnimation.enabled = false;
-		myRenderer.enabled = true;
+		//myAnimation.enabled = false;
+		//myRenderer.enabled = true;
 		
 	}
 
 	private void SetState_USED()
 	{
 		// attiva animator, disattiva sprite renderer
-		myAnimation.enabled = true;
-		myRenderer.enabled = false;
+		//myAnimation.enabled = true;
+		//myRenderer.enabled = false;
 		
 	}
 
 	private void SetState_END()
 	{
 		// disattiva animator, attiva sprite renderer
-		myAnimation.enabled = false;
-		myRenderer.enabled = true;
+		//myAnimation.enabled = false;
+		//myRenderer.enabled = true;
 	}
 	#endregion
 }
